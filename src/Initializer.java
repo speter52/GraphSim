@@ -11,14 +11,14 @@ import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * Class to read in graph represention from a json file and build the network of nodes.
+ * Class to read in graph representation from a json file and build the network of nodes.
  */
 public class Initializer
 {
     /**
      * Convert JSONArray to List
-     * @param array
-     * @return
+     * @param array JSONArray to convert
+     * @return Converted List
      */
     private static List convertJSONArrayToList(JSONArray array)
     {
@@ -42,7 +42,7 @@ public class Initializer
     /**
      * Read JSON file into JSONObject.
      * @param inputFile
-     * @return
+     * @return JSONObject created from parsing input file
      */
     private static JSONObject readJSONFile(String inputFile)
     {
@@ -72,6 +72,12 @@ public class Initializer
         return networkRepresentation;
     }
 
+    /**
+     * Iterates through the JSON object and parses the entries to build each node.
+     * @param networkRepresentation JSON representation
+     * @param communicationArray Array of message queues for communication between nodes
+     * @return List of nodes
+     */
     private static List buildNodes(JSONObject networkRepresentation, LinkedBlockingQueue[] communicationArray)
     {
         List<Node> nodeList = new ArrayList<Node>();

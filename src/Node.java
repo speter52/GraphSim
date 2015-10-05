@@ -24,7 +24,7 @@ public class Node extends Thread
 
     /**
      * Primary Constructor.
-     * @param communicationArray
+     * @param communicationArray Array of message queues used for node communication
      */
     public Node(int nodeID, LinkedBlockingQueue<String>[] communicationArray, List<Integer> neighbors)
     {
@@ -37,8 +37,8 @@ public class Node extends Thread
 
     /**
      * Send a message to the specified node by adding the message to the appropriate queue.
-     * @param receiverID
-     * @param message
+     * @param receiverID ID of the node that will the message is being sent to
+     * @param message Message content string
      */
     public void sendMessage(int receiverID, String message)
     {
@@ -54,7 +54,7 @@ public class Node extends Thread
 
     /**
      * Send message to all neighbors of this node.
-     * @param message
+     * @param message Message content string
      */
     public void sendMessageToNeighbors(String message)
     {
