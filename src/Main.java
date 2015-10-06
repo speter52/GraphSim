@@ -9,11 +9,9 @@ public class Main {
     {
         List<Node> nodeList = Initializer.createNetwork("InputGraphs/InputGraph1.json");
 
-        nodeList.get(0).sendMessage(1, "Hi from 0");
-        nodeList.get(1).sendMessage(0, "Hi from 1");
-        nodeList.get(0).sendMessage(1, "Okay bye from 0");
+        nodeList.get(4).sendMessage(0, "Yahoo!");
 
-        Thread.sleep(1000);
+        Thread.sleep(5000);
         System.exit(0);
     }
 }

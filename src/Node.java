@@ -1,4 +1,6 @@
+import java.util.Dictionary;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -23,16 +25,24 @@ public class Node extends Thread
     private List<Integer> neighbors;
 
     /**
+     * Dictionary of data in node.
+     */
+    private Map<String,Integer> data;
+
+    /**
      * Primary Constructor.
      * @param communicationArray Array of message queues used for node communication
      */
-    public Node(int nodeID, LinkedBlockingQueue<String>[] communicationArray, List<Integer> neighbors)
+    public Node(int nodeID, LinkedBlockingQueue<String>[] communicationArray, List<Integer> neighbors,
+                Map<String,Integer> data)
     {
         this.nodeID = nodeID;
 
         this.communicationArray = communicationArray;
 
         this.neighbors = neighbors;
+
+        this.data = data;
     }
 
     /**
@@ -63,13 +73,16 @@ public class Node extends Thread
             sendMessage(neighbor, message);
         }
     }
+
     /**
      * TEMPORARY: Figure out what to do after processing message
      * @param message
      */
     private void processMessage(String message)
     {
-        System.out.println(nodeID + " - " + message);
+        System.out.println(nodeID + " received - " + message);
+
+        sendMessageToNeighbors(message);
     }
 
 
