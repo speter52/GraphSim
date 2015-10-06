@@ -82,9 +82,18 @@ public class Node extends Thread
     {
         System.out.println(nodeID + " received - " + message);
 
-        sendMessageToNeighbors(message);
-    }
+        Map<String,String> messageContents = MessageEncoder.decodeMessage(message);
 
+        String command = messageContents.get("Action");
+
+        switch (command)
+        {
+            case "Request" :
+                break;
+            case "Response" :
+                break;
+        }
+    }
 
     /**
      * Run method that does the work for the Node - processes messages from the message queue of this node.

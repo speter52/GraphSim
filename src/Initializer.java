@@ -1,10 +1,6 @@
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -13,130 +9,6 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class Initializer
 {
-    /**
-     * Convert JSONArray to List.
-     * @param array JSONArray to convert
-     * @return Converted List
-     */
-    private static List convertJSONArrayToList(JSONArray array)
-    {
-        List newList = new ArrayList<String>();
-
-        try
-        {
-            for (int i = 0; i < array.length(); i++)
-            {
-                newList.add(array.get(i));
-            }
-        }
-        catch (JSONException ex)
-        {
-            ex.printStackTrace();
-        }
-
-        return newList;
-    }
-
-    /**
-     * Convert JSONObject to Map.
-     * @param object JSONObject to convert
-     * @return Converted Map
-     */
-    private static Map<String,Integer> convertJSONObjectToMap(JSONObject object)
-    {
-        Map<String, Integer> newDictionary = new HashMap<String, Integer>();
-
-        try
-        {
-            Iterator<String> keys = object.keys();
-
-            while (keys.hasNext())
-            {
-                String key = keys.next();
-
-                int value = object.getInt(key);
-
-                newDictionary.put(key,value);
-            }
-        }
-        catch(JSONException ex)
-        {
-            ex.printStackTrace();
-        }
-
-        return newDictionary;
-    }
-
-    /**
-     * Read JSON file into JSONObject.
-     * @param inputFile
-     * @return JSONObject created from parsing input file
-     */
-    private static JSONObject readJSONFile(String inputFile)
-    {
-        JSONObject networkRepresentation = null;
-
-        try
-        {
-            File file = new File(inputFile);
-
-            FileInputStream fis = new FileInputStream(file);
-
-            byte[] data = new byte[(int) file.length()];
-
-            fis.read(data);
-
-            fis.close();
-
-            String jsonText = new String(data, "UTF-8");
-
-            networkRepresentation = new JSONObject(jsonText);
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
-
-        return networkRepresentation;
-    }
-
-    /**
-     * Parse parameters from JSON Object to build Node.
-     * @param currentKey ID of Node
-     * @param networkRepresentation JSON representation of network
-     * @param communicationArray Array of message queues for node communication
-     * @return New Node
-     */
-    private static Node parseJSONObject(String currentKey, JSONObject networkRepresentation,
-                                        LinkedBlockingQueue[] communicationArray )
-    {
-        try
-        {
-            List<Integer> neighbors;
-
-            Map<String,Integer> data;
-
-            JSONObject nodeObject = networkRepresentation.getJSONObject(currentKey);
-
-            JSONArray neighborsArray = nodeObject.getJSONArray("Neighbors");
-
-            neighbors = convertJSONArrayToList(neighborsArray);
-
-            JSONObject dataObject= nodeObject.getJSONObject("Data");
-
-            data = convertJSONObjectToMap(dataObject);
-
-            Node newNode = new Node(Integer.parseInt(currentKey), communicationArray, neighbors, data);
-
-            return newNode;
-        }
-        catch (JSONException ex)
-        {
-            ex.printStackTrace();
-
-            return null;
-        }
-    }
 
     /**
      * Iterates through the JSON object and parses the entries to build each node.
@@ -156,7 +28,7 @@ public class Initializer
         {
             String currentKey = Integer.toString(nodeID);
 
-            Node newNode = parseJSONObject(currentKey, networkRepresentation, communicationArray);
+            Node newNode = JSONParser.parseJSONObject(currentKey, networkRepresentation, communicationArray);
 
             newNode.start();
 
@@ -173,7 +45,7 @@ public class Initializer
      */
     public static List createNetwork(String inputFile)
     {
-        JSONObject networkRepresentation = readJSONFile(inputFile);
+        JSONObject networkRepresentation = JSONParser.readJSONFile(inputFile);
 
         LinkedBlockingQueue<String>[] communicationArray = new LinkedBlockingQueue[networkRepresentation.length()];
 
