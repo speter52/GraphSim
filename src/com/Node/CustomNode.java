@@ -36,24 +36,6 @@ public class CustomNode extends GenericNode
     private List<Integer> responsesReceived = new ArrayList<Integer>();
 
     /**
-     * When a request is received from another node, send back your x value to them.
-     */
-    private void processRequest(Message incomingMessage)
-    {
-        Message outgoingMessage = new Message();
-
-        outgoingMessage.addArgument("Type", "Response");
-
-        outgoingMessage.addArgument("x", data.get("x").toString());
-
-        outgoingMessage.addArgument("ID", Integer.toString(nodeID));
-
-        int recipientID = Integer.parseInt(incomingMessage.getArgument("ID"));
-
-        sendMessage(recipientID, outgoingMessage);
-    }
-
-    /**
      * Calculate and return the average of a list of ints.
      * @param listOfInts
      * @return average
@@ -82,6 +64,24 @@ public class CustomNode extends GenericNode
         outgoingMessage.addArgument("ID", Integer.toString(nodeID));
 
         sendMessageToNeighbors(outgoingMessage);
+    }
+
+    /**
+     * When a request is received from another node, send back your x value to them.
+     */
+    private void processRequest(Message incomingMessage)
+    {
+        Message outgoingMessage = new Message();
+
+        outgoingMessage.addArgument("Type", "Response");
+
+        outgoingMessage.addArgument("x", data.get("x").toString());
+
+        outgoingMessage.addArgument("ID", Integer.toString(nodeID));
+
+        int recipientID = Integer.parseInt(incomingMessage.getArgument("ID"));
+
+        sendMessage(recipientID, outgoingMessage);
     }
 
     /**

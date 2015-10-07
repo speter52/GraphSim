@@ -17,10 +17,9 @@ public abstract class GenericNode extends Thread
     protected int nodeID;
 
     /**
-     * Holds the array of message queues for each node in the network. Nodes receive messages by reading its queue and
-     * send messages by adding to the recipient node's queue.
+     * Dictionary of data in node.
      */
-    private LinkedBlockingQueue<String>[] communicationArray;
+    protected Map<String,Integer> data;
 
     /**
      * List of this node's neighbors.
@@ -28,9 +27,16 @@ public abstract class GenericNode extends Thread
     protected List<Integer> neighbors;
 
     /**
-     * Dictionary of data in node.
+     * Holds the array of message queues for each node in the network. Nodes receive messages by reading its queue and
+     * send messages by adding to the recipient node's queue.
      */
-    protected Map<String,Integer> data;
+    private LinkedBlockingQueue<String>[] communicationArray;
+
+    /**
+     * Abstract method implemented by user in CustomNode class to determine how the node should run.
+     * @param message Received message
+     */
+    protected abstract void processMessage(String message);
 
     /**
      * Getter for node ID
@@ -88,11 +94,6 @@ public abstract class GenericNode extends Thread
         }
     }
 
-    /**
-     * TEMPORARY: Figure out what to do after processing message
-     * @param message
-     */
-    protected abstract void processMessage(String message);
 
     /**
      * Run method that does the work for the Node - processes messages from the message queue of this node.
