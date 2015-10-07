@@ -23,16 +23,15 @@ public class CustomNode extends GenericNode
      * USER NEEDS TO IMPLEMENT ABSTRACT processMessage() METHOD FROM SUPERCLASS
      */
 
-    /**
-     * List to keep track of the response values received from other nodes.
-     */
-
     // Colors for console output
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_BOLD = "\u001B[1m";
 
+    /**
+     * List to keep track of the response values received from other nodes.
+     */
     private List<Integer> responsesReceived = new ArrayList<Integer>();
 
     /**
