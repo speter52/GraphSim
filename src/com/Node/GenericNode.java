@@ -1,4 +1,7 @@
-import java.util.Dictionary;
+package com.Node;
+
+import com.Message;
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -6,12 +9,12 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * Class to represent one node. Listens for and sends messages from/to other nodes while doing work.
  */
-public class Node extends Thread
+public abstract class GenericNode extends Thread
 {
     /**
      * ID of this node.
      */
-    private int nodeID;
+    protected int nodeID;
 
     /**
      * Holds the array of message queues for each node in the network. Nodes receive messages by reading its queue and
@@ -22,19 +25,28 @@ public class Node extends Thread
     /**
      * List of this node's neighbors.
      */
-    private List<Integer> neighbors;
+    protected List<Integer> neighbors;
 
     /**
      * Dictionary of data in node.
      */
-    private Map<String,Integer> data;
+    protected Map<String,Integer> data;
+
+    /**
+     * Getter for node ID
+     * @return nodeID
+     */
+    public int getNodeID()
+    {
+        return nodeID;
+    }
 
     /**
      * Primary Constructor.
      * @param communicationArray Array of message queues used for node communication
      */
-    public Node(int nodeID, LinkedBlockingQueue<String>[] communicationArray, List<Integer> neighbors,
-                Map<String,Integer> data)
+    public GenericNode(int nodeID, LinkedBlockingQueue<String>[] communicationArray, List<Integer> neighbors,
+                       Map<String, Integer> data)
     {
         this.nodeID = nodeID;
 
@@ -50,11 +62,13 @@ public class Node extends Thread
      * @param receiverID ID of the node that will the message is being sent to
      * @param message Message content string
      */
-    public void sendMessage(int receiverID, String message)
+    public void sendMessage(int receiverID, Message message)
     {
         try
         {
-            communicationArray[receiverID].put(message);
+            String messageString = message.encodeMessage();
+
+            communicationArray[receiverID].put(messageString);
         }
         catch (Exception ex)
         {
@@ -66,7 +80,7 @@ public class Node extends Thread
      * Send message to all neighbors of this node.
      * @param message Message content string
      */
-    public void sendMessageToNeighbors(String message)
+    public void sendMessageToNeighbors(Message message)
     {
         for (int neighbor : neighbors)
         {
@@ -78,22 +92,7 @@ public class Node extends Thread
      * TEMPORARY: Figure out what to do after processing message
      * @param message
      */
-    private void processMessage(String message)
-    {
-        System.out.println(nodeID + " received - " + message);
-
-        Map<String,String> messageContents = MessageEncoder.decodeMessage(message);
-
-        String command = messageContents.get("Action");
-
-        switch (command)
-        {
-            case "Request" :
-                break;
-            case "Response" :
-                break;
-        }
-    }
+    protected abstract void processMessage(String message);
 
     /**
      * Run method that does the work for the Node - processes messages from the message queue of this node.

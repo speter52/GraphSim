@@ -1,3 +1,6 @@
+package com;
+
+import com.Node.CustomNode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,7 +47,7 @@ public class JSONParser
         // Values are stored as ints when the object is referring to the data of a node. The values
         // are stored as Strings when the object is referring to a message sent between nodes which can
         // have data along with other commands.
-        // TODO: Refactor function, need values as both Strings and Ints?
+        // TODO: Refactor function, need map values as both Strings and Ints?
         Map newDictionary = valuesAsInts ? new HashMap<String,Integer>() : new HashMap<String,String>();
 
         try
@@ -118,7 +121,7 @@ public class JSONParser
      * @param communicationArray Array of message queues for node communication
      * @return New Node
      */
-    public static Node parseJSONObject(String currentKey, JSONObject networkRepresentation,
+    public static CustomNode parseJSONObject(String currentKey, JSONObject networkRepresentation,
                                 LinkedBlockingQueue[] communicationArray)
     {
         try
@@ -139,7 +142,7 @@ public class JSONParser
 
             data = convertJSONObjectToMap(dataObject, storeValuesAsInts);
 
-            Node newNode = new Node(Integer.parseInt(currentKey), communicationArray, neighbors, data);
+            CustomNode newNode = new CustomNode(Integer.parseInt(currentKey), communicationArray, neighbors, data);
 
             return newNode;
         }

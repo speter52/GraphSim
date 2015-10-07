@@ -1,4 +1,6 @@
+package com;
 
+import com.Node.CustomNode;
 import org.json.JSONObject;
 
 import java.util.*;
@@ -9,6 +11,21 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class Initializer
 {
+    /**
+     * Sends a start message to all the nodes in the network.
+     * @param nodeList List of all nodes in network
+     */
+    public static void startNetwork(List<CustomNode> nodeList)
+    {
+        Message startMessage = new Message();
+
+        startMessage.addArgument("Type", "Start");
+
+        for (CustomNode node : nodeList)
+        {
+            node.sendMessage(node.getNodeID(), startMessage);
+        }
+    }
 
     /**
      * Iterates through the JSON object and parses the entries to build each node.
@@ -18,7 +35,7 @@ public class Initializer
      */
     private static List buildNodes(JSONObject networkRepresentation, LinkedBlockingQueue[] communicationArray)
     {
-        List<Node> nodeList = new ArrayList<Node>();
+        List<CustomNode> nodeList = new ArrayList<CustomNode>();
 
         Iterator<String> keys = networkRepresentation.keys();
 
@@ -28,7 +45,7 @@ public class Initializer
         {
             String currentKey = Integer.toString(nodeID);
 
-            Node newNode = JSONParser.parseJSONObject(currentKey, networkRepresentation, communicationArray);
+            CustomNode newNode = JSONParser.parseJSONObject(currentKey, networkRepresentation, communicationArray);
 
             newNode.start();
 
@@ -55,7 +72,7 @@ public class Initializer
             communicationArray[i] = new LinkedBlockingQueue<String>();
         }
 
-        List<Node> nodeList = buildNodes(networkRepresentation, communicationArray);
+        List<CustomNode> nodeList = buildNodes(networkRepresentation, communicationArray);
 
         return nodeList;
     }
