@@ -32,11 +32,31 @@ public abstract class GenericNode extends Thread
      */
     private LinkedBlockingQueue<String>[] communicationArray;
 
+    protected abstract void startNode();
+
+    protected abstract void processResponse(Message incomingMessage);
+
     /**
-     * Abstract method implemented by user in CustomNode class to determine how the node should run.
-     * @param message Received message
+     * Process messages received by node
+     * @param messageString
      */
-    protected abstract void processMessage(String message);
+    private void processMessage(String messageString)
+    {
+        Message incomingMessage = new Message(messageString);
+
+        String messageType = incomingMessage.getArgument("Type");
+
+        switch (messageType)
+        {
+            case "Start":
+                startNode();
+                break;
+
+            case "Response":
+                processResponse(incomingMessage);
+                break;
+        }
+    }
 
     /**
      * Getter for node ID
@@ -94,9 +114,25 @@ public abstract class GenericNode extends Thread
         }
     }
 
+    /**
+     * Send this node's values to all its neighbors.
+     */
+    public void sendValuesToNeighbors()
+    {
+        Message outgoingMessage = new Message();
+
+        outgoingMessage.addArgument("Type", "Response");
+
+        // TODO: Send all values
+        outgoingMessage.addArgument("x", data.get("x").toString());
+
+        outgoingMessage.addArgument("ID", Integer.toString(nodeID));
+
+        sendMessageToNeighbors(outgoingMessage);
+    }
 
     /**
-     * Run method that does the work for the Node - processes messages from the message queue of this node.
+     * Run method that processes messages from the message queue of this node.
      */
     public void run()
     {

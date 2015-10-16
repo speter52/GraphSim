@@ -52,43 +52,12 @@ public class CustomNode extends GenericNode
     }
 
     /**
-     * Send request to all neighbors asking them for their values.
-     */
-    private void requestValuesFromNeighbors()
-    {
-        Message outgoingMessage = new Message();
-
-        outgoingMessage.addArgument("Type","Request");
-
-        outgoingMessage.addArgument("ID", Integer.toString(nodeID));
-
-        sendMessageToNeighbors(outgoingMessage);
-    }
-
-    /**
-     * When a request is received from another node, send back your x value to them.
-     */
-    private void processRequest(Message incomingMessage)
-    {
-        Message outgoingMessage = new Message();
-
-        outgoingMessage.addArgument("Type", "Response");
-
-        outgoingMessage.addArgument("x", data.get("x").toString());
-
-        outgoingMessage.addArgument("ID", Integer.toString(nodeID));
-
-        int recipientID = Integer.parseInt(incomingMessage.getArgument("ID"));
-
-        sendMessage(recipientID, outgoingMessage);
-    }
-
-    /**
      * When a response is received from another node, add it to the response history. Once responses are
      * received from all the neighbors, average that and mark it as your new value for x.
      * @param incomingMessage
      */
-    private void processResponse(Message incomingMessage)
+    @Override
+    protected void processResponse(Message incomingMessage)
     {
         int responseValue = Integer.parseInt(incomingMessage.getArgument("x"));
 
@@ -109,34 +78,16 @@ public class CustomNode extends GenericNode
 
             responsesReceived.clear();
 
-            requestValuesFromNeighbors();
+            sendValuesToNeighbors();
         }
     }
 
     /**
-     * Inherited method from super class that decides what happens when a node receives a message.
-     * @param messageString Message string
+     * Process the start message that says the node can begin doing work
      */
     @Override
-    protected void processMessage(String messageString)
+    protected void startNode()
     {
-        Message incomingMessage = new Message(messageString);
-
-        String messageType = incomingMessage.getArgument("Type");
-
-        switch (messageType)
-        {
-            case "Start":
-                requestValuesFromNeighbors();
-                break;
-
-            case "Request":
-                processRequest(incomingMessage);
-                break;
-
-            case "Response":
-                processResponse(incomingMessage);
-                break;
-        }
+        sendValuesToNeighbors();
     }
 }
