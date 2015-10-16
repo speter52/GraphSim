@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="seniorthesis" default="all">
+  
+  
+  <property file="dist-system.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="700m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/*.rbc/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.bundle/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/.tox/**"/>
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/vssver.scc/**"/>
+    <exclude name="**/vssver2.scc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.war"/>
+    <include name="*.ear"/>
+    <include name="*.apk"/>
+    <include name="*.zip"/>
+    <include name="*.swc"/>
+    <include name="*.ane"/>
+    <include name="*.egg"/>
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+    <exclude name="**/?*.aj"/>
+  </patternset>
+  
+  <!-- JDK definitions -->
+  
+  <property name="jdk.bin.1.7" value="${jdk.home.1.7}/bin"/>
+  <path id="jdk.classpath.1.7">
+    <fileset dir="${jdk.home.1.7}">
+      <include name="jre/lib/resources.jar"/>
+      <include name="jre/lib/jce.jar"/>
+      <include name="jre/lib/jsse.jar"/>
+      <include name="jre/lib/charsets.jar"/>
+      <include name="jre/lib/rt.jar"/>
+      <include name="jre/lib/rhino.jar"/>
+      <include name="jre/lib/management-agent.jar"/>
+      <include name="jre/lib/compilefontconfig.jar"/>
+      <include name="jre/lib/javazic.jar"/>
+      <include name="jre/lib/ext/localedata.jar"/>
+      <include name="jre/lib/ext/sunpkcs11.jar"/>
+      <include name="jre/lib/ext/dnsns.jar"/>
+      <include name="jre/lib/ext/zipfs.jar"/>
+      <include name="jre/lib/ext/sunjce_provider.jar"/>
+      <include name="jre/lib/ext/java-atk-wrapper.jar"/>
+      <include name="jre/lib/ext/icedtea-sound.jar"/>
+    </fileset>
+  </path>
+  
+  <property name="project.jdk.home" value="${jdk.home.1.7}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.1.7}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.1.7"/>
+  <!-- Register Custom Compiler Taskdefs -->
+  <property name="javac2.home" value="${idea.home}/lib"/>
+  <path id="javac2.classpath">
+    <pathelement location="${javac2.home}/javac2.jar"/>
+    <pathelement location="${javac2.home}/jdom.jar"/>
+    <pathelement location="${javac2.home}/asm-all.jar"/>
+    <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
+  </path>
+  <target name="register.custom.compilers">
+    <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
+    <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
+  </target>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module SeniorThesis -->
+  
+  <dirname property="module.seniorthesis.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.seniorthesis" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.seniorthesis" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.seniorthesis" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.seniorthesis" value="-encoding UTF-8 -source 1.7 ${compiler.args}"/>
+  
+  <property name="seniorthesis.output.dir" value="${module.seniorthesis.basedir}/out/production/SeniorThesis"/>
+  <property name="seniorthesis.testoutput.dir" value="${module.seniorthesis.basedir}/out/test/SeniorThesis"/>
+  
+  <path id="seniorthesis.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="seniorthesis.module.production.classpath">
+    <path refid="${module.jdk.classpath.seniorthesis}"/>
+    <pathelement location="${basedir}/Modules/java-json.jar"/>
+  </path>
+  
+  <path id="seniorthesis.runtime.production.module.classpath">
+    <pathelement location="${seniorthesis.output.dir}"/>
+    <pathelement location="${basedir}/Modules/java-json.jar"/>
+  </path>
+  
+  <path id="seniorthesis.module.classpath">
+    <path refid="${module.jdk.classpath.seniorthesis}"/>
+    <pathelement location="${seniorthesis.output.dir}"/>
+    <pathelement location="${basedir}/Modules/java-json.jar"/>
+  </path>
+  
+  <path id="seniorthesis.runtime.module.classpath">
+    <pathelement location="${seniorthesis.testoutput.dir}"/>
+    <pathelement location="${seniorthesis.output.dir}"/>
+    <pathelement location="${basedir}/Modules/java-json.jar"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.seniorthesis">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.seniorthesis">
+    <patternset refid="excluded.from.module.seniorthesis"/>
+  </patternset>
+  
+  <path id="seniorthesis.module.sourcepath">
+    <dirset dir="${module.seniorthesis.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.seniorthesis" depends="compile.module.seniorthesis.production,compile.module.seniorthesis.tests" description="Compile module SeniorThesis"/>
+  
+  <target name="compile.module.seniorthesis.production" depends="register.custom.compilers" description="Compile module SeniorThesis; production classes">
+    <mkdir dir="${seniorthesis.output.dir}"/>
+    <javac2 destdir="${seniorthesis.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.seniorthesis}/javac">
+      <compilerarg line="${compiler.args.seniorthesis}"/>
+      <bootclasspath refid="seniorthesis.module.bootclasspath"/>
+      <classpath refid="seniorthesis.module.production.classpath"/>
+      <src refid="seniorthesis.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.seniorthesis"/>
+    </javac2>
+    
+    <copy todir="${seniorthesis.output.dir}">
+      <fileset dir="${module.seniorthesis.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.seniorthesis.tests" depends="register.custom.compilers,compile.module.seniorthesis.production" description="compile module SeniorThesis; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.seniorthesis" description="cleanup module">
+    <delete dir="${seniorthesis.output.dir}"/>
+    <delete dir="${seniorthesis.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.seniorthesis" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.seniorthesis" description="build all modules"/>
+  
+  <target name="all" depends="build.modules" description="build all"/>
+</project>
