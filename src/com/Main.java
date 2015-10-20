@@ -8,7 +8,7 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException
     {
-        List<CustomNode> nodeList = Initializer.createNetwork("InputGraphs/InputGraph2.json");
+        List<CustomNode> nodeList = Initializer.createNetwork("InputGraphs/InputGraph1.yml");
 
         Initializer.startNetwork(nodeList);
 

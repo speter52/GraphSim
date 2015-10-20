@@ -1,7 +1,6 @@
-package com;
+package com.MessageHandler;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.yaml.snakeyaml.Yaml;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,24 +24,13 @@ public class Message
     }
 
     /**
-     * Consructor that builds a message from a JSON string representation.
+     * Consructor that builds a message from a YAML string representation.
      */
     public Message(String message)
     {
-        try
-        {
-            JSONObject object = new JSONObject(message);
+        Yaml yaml = new Yaml();
 
-            boolean storeValuesAsInts = false;
-
-            messageContents = JSONParser.convertJSONObjectToMap(object, storeValuesAsInts);
-        }
-        catch(JSONException ex)
-        {
-            ex.printStackTrace();
-
-            messageContents = null;
-        }
+        messageContents = (Map)yaml.load(message);
     }
 
     /**
@@ -66,15 +54,16 @@ public class Message
     }
 
     /**
-     * TODO: Override toString() method?
-     * Converts the message into a JSON string representation.
+     * Converts the message into a YAML string representation.
      * @return Message string
      */
-    public String encodeMessage()
+    public String serializeMessage()
     {
-        JSONObject object = new JSONObject(messageContents);
+        Yaml yaml = new Yaml();
 
-        return object.toString();
+        String serializedMessage = yaml.dump(messageContents);
+
+        return serializedMessage;
     }
 
 }

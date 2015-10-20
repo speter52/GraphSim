@@ -109,23 +109,35 @@
   <path id="seniorthesis.module.production.classpath">
     <path refid="${module.jdk.classpath.seniorthesis}"/>
     <pathelement location="${basedir}/Modules/java-json.jar"/>
+    <pathelement location="${basedir}/Modules/yamlbeans-1.09.jar"/>
+    
+    <pathelement location="${basedir}/Modules/snakeyaml-1.16.jar"/>
   </path>
   
   <path id="seniorthesis.runtime.production.module.classpath">
     <pathelement location="${seniorthesis.output.dir}"/>
     <pathelement location="${basedir}/Modules/java-json.jar"/>
+    <pathelement location="${basedir}/Modules/yamlbeans-1.09.jar"/>
+    
+    <pathelement location="${basedir}/Modules/snakeyaml-1.16.jar"/>
   </path>
   
   <path id="seniorthesis.module.classpath">
     <path refid="${module.jdk.classpath.seniorthesis}"/>
     <pathelement location="${seniorthesis.output.dir}"/>
     <pathelement location="${basedir}/Modules/java-json.jar"/>
+    <pathelement location="${basedir}/Modules/yamlbeans-1.09.jar"/>
+    
+    <pathelement location="${basedir}/Modules/snakeyaml-1.16.jar"/>
   </path>
   
   <path id="seniorthesis.runtime.module.classpath">
     <pathelement location="${seniorthesis.testoutput.dir}"/>
     <pathelement location="${seniorthesis.output.dir}"/>
     <pathelement location="${basedir}/Modules/java-json.jar"/>
+    <pathelement location="${basedir}/Modules/yamlbeans-1.09.jar"/>
+    
+    <pathelement location="${basedir}/Modules/snakeyaml-1.16.jar"/>
   </path>
   
   

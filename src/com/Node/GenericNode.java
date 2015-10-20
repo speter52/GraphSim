@@ -1,10 +1,10 @@
 package com.Node;
 
-import com.Message;
+import com.MessageHandler.Message;
+import com.MessageHandler.MessagePasser;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Class to represent one node. Listens for and sends messages from/to other nodes while doing work.
@@ -24,13 +24,13 @@ public abstract class GenericNode extends Thread
     /**
      * List of this node's neighbors.
      */
-    protected List<Integer> neighbors;
+    protected ArrayList<Integer> neighbors;
 
     /**
      * Holds the array of message queues for each node in the network. Nodes receive messages by reading its queue and
      * send messages by adding to the recipient node's queue.
      */
-    private LinkedBlockingQueue<String>[] communicationArray;
+    private MessagePasser messagePasser;
 
     protected abstract void startNode();
 
@@ -69,14 +69,14 @@ public abstract class GenericNode extends Thread
 
     /**
      * Primary Constructor.
-     * @param communicationArray Array of message queues used for node communication
+     * @param messagePasser Array of message queues used for node communication
      */
-    public GenericNode(int nodeID, LinkedBlockingQueue<String>[] communicationArray, List<Integer> neighbors,
+    public GenericNode(int nodeID, MessagePasser messagePasser, ArrayList neighbors,
                        Map<String, Integer> data)
     {
         this.nodeID = nodeID;
 
-        this.communicationArray = communicationArray;
+        this.messagePasser = messagePasser;
 
         this.neighbors = neighbors;
 
@@ -84,22 +84,13 @@ public abstract class GenericNode extends Thread
     }
 
     /**
-     * Send a message to the specified node by adding the message to the appropriate queue.
+     * Send a message to the specified node by calling the messagePasser.
      * @param receiverID ID of the node that will the message is being sent to
      * @param message Message content string
      */
     public void sendMessage(int receiverID, Message message)
     {
-        try
-        {
-            String messageString = message.encodeMessage();
-
-            communicationArray[receiverID].put(messageString);
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
+        messagePasser.sendMessage(receiverID, message);
     }
 
     /**
@@ -138,17 +129,9 @@ public abstract class GenericNode extends Thread
     {
         while(true)
         {
-            try
-            {
-                String incomingMessage = communicationArray[nodeID].take();
+            String incomingMessage = messagePasser.waitAndRetrieveMessage(nodeID);
 
-                processMessage(incomingMessage);
-            }
-            catch (InterruptedException ex)
-            {
-                ex.printStackTrace();
-            }
+            processMessage(incomingMessage);
         }
-
     }
 }

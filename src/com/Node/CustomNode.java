@@ -1,21 +1,21 @@
 package com.Node;
 
-import com.Message;
+import com.MessageHandler.Message;
+import com.MessageHandler.MessagePasser;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Class where user defines the behavior of each node.
  */
 public class CustomNode extends GenericNode
 {
-    public CustomNode(int nodeID, LinkedBlockingQueue<String>[] communicationArray, List<Integer> neighbors,
+    public CustomNode(int nodeID, MessagePasser messagePasser, ArrayList neighbors,
                       Map<String, Integer> data)
     {
-        super(nodeID, communicationArray, neighbors, data);
+        super(nodeID, messagePasser, neighbors, data);
     }
 
     /**

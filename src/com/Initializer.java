@@ -1,10 +1,10 @@
 package com;
 
+import com.MessageHandler.Message;
+import com.MessageHandler.MessagePasser;
 import com.Node.CustomNode;
-import org.json.JSONObject;
 
 import java.util.*;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Class to read in graph representation from a json file and build the network of nodes.
@@ -28,24 +28,23 @@ public class Initializer
     }
 
     /**
-     * Iterates through the JSON object and parses the entries to build each node.
-     * @param networkRepresentation JSON representation
-     * @param communicationArray Array of message queues for communication between nodes
+     * Iterates through the representation of the nodes and parses the entries to build each node.
+     * @param nodesRepresentation JSON representation
+     * @param messagePasser of message queues for communication between nodes
      * @return List of nodes
      */
-    private static List buildNodes(JSONObject networkRepresentation, LinkedBlockingQueue[] communicationArray)
+    private static List buildNodes(Map<Integer,Object> nodesRepresentation, MessagePasser messagePasser)
     {
         List<CustomNode> nodeList = new ArrayList<CustomNode>();
 
-        Iterator<String> keys = networkRepresentation.keys();
-
-        // Parse JSON file to build each node
-        // TODO: Implement allowing nodes to have any id instead of just increasing integer id's
-        for(int nodeID = 0; nodeID < networkRepresentation.length(); nodeID++)
+        // Parse representation to build each node
+        for(Map.Entry nodeEntry : nodesRepresentation.entrySet())
         {
-            String currentKey = Integer.toString(nodeID);
+            int nodeID = (Integer)nodeEntry.getKey();
 
-            CustomNode newNode = JSONParser.parseJSONObject(currentKey, networkRepresentation, communicationArray);
+            Map nodeDetails = (Map) nodeEntry.getValue();
+
+            CustomNode newNode = Parser.parseNodeEntry(nodeID, nodeDetails, messagePasser);
 
             newNode.start();
 
@@ -62,17 +61,13 @@ public class Initializer
      */
     public static List createNetwork(String inputFile)
     {
-        JSONObject networkRepresentation = JSONParser.readJSONFile(inputFile);
+        Map<Integer,Object> networkRepresentation = Parser.readYAMLFile(inputFile);
 
-        LinkedBlockingQueue<String>[] communicationArray = new LinkedBlockingQueue[networkRepresentation.length()];
+        Map<Integer,Object> nodesRepresentation = Parser.getNodesInSelfCluster(networkRepresentation);
 
-        // Initialize communication array with empty queues
-        for(int i = 0; i < networkRepresentation.length(); i++)
-        {
-            communicationArray[i] = new LinkedBlockingQueue<String>();
-        }
+        MessagePasser messagePasser = new MessagePasser(nodesRepresentation);
 
-        List<CustomNode> nodeList = buildNodes(networkRepresentation, communicationArray);
+        List<CustomNode> nodeList = buildNodes(nodesRepresentation, messagePasser);
 
         return nodeList;
     }
