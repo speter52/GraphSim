@@ -1,16 +1,10 @@
 package com;
 
-import com.Node.CustomNode;
-
-import java.util.List;
-
 public class Main {
 
     public static void main(String[] args) throws InterruptedException
     {
-        List<CustomNode> nodeList = Initializer.createNetwork("InputGraphs/InputGraph1.yml");
-
-        Initializer.startNetwork(nodeList);
+        Coordinator.launchNetwork("InputGraphs/InputGraph1.yml");
 
         Thread.sleep(50000);
 

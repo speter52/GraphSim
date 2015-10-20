@@ -1,21 +1,26 @@
-package com;
+package com.Network;
 
 import com.MessageHandler.Message;
 import com.MessageHandler.MessagePasser;
-import com.Node.CustomNode;
+import com.Network.CustomNode;
+import com.Parser;
 
 import java.util.*;
 
 /**
- * Class to read in graph representation from a json file and build the network of nodes.
+ * Class that represents the cluster of nodes that will run on this instance.
  */
-public class Initializer
+public class Cluster
 {
     /**
-     * Sends a start message to all the nodes in the network.
-     * @param nodeList List of all nodes in network
+     * List of nodes in this cluster.
      */
-    public static void startNetwork(List<CustomNode> nodeList)
+    private List<CustomNode> nodeList;
+
+    /**
+     * Send a start message to all the nodes in this cluster.
+     */
+    public void startNetwork()
     {
         Message startMessage = new Message();
 
@@ -33,9 +38,9 @@ public class Initializer
      * @param messagePasser of message queues for communication between nodes
      * @return List of nodes
      */
-    private static List buildNodes(Map<Integer,Object> nodesRepresentation, MessagePasser messagePasser)
+    private void buildNodes(Map<Integer,Object> nodesRepresentation, MessagePasser messagePasser)
     {
-        List<CustomNode> nodeList = new ArrayList<CustomNode>();
+        nodeList = new ArrayList<CustomNode>();
 
         // Parse representation to build each node
         for(Map.Entry nodeEntry : nodesRepresentation.entrySet())
@@ -50,16 +55,14 @@ public class Initializer
 
             nodeList.add(nodeID, newNode);
         }
-
-        return nodeList;
     }
 
     /**
-     * Uses a graph representation in a json to build the network of nodes.
-     * @param inputFile Needs to be in the format - { "<Node ID>" : [<List of neighbor ID's>] }
+     * Primary constructor that uses a graph representation in YAML to build the network of nodes.
+     * @param inputFile
      * @return List of Nodes created.
      */
-    public static List createNetwork(String inputFile)
+    public Cluster(String inputFile)
     {
         Map<Integer,Object> networkRepresentation = Parser.readYAMLFile(inputFile);
 
@@ -67,8 +70,6 @@ public class Initializer
 
         MessagePasser messagePasser = new MessagePasser(nodesRepresentation);
 
-        List<CustomNode> nodeList = buildNodes(nodesRepresentation, messagePasser);
-
-        return nodeList;
+        buildNodes(nodesRepresentation, messagePasser);
     }
 }

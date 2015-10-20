@@ -1,4 +1,4 @@
-package com.Node;
+package com.Network;
 
 import com.MessageHandler.Message;
 import com.MessageHandler.MessagePasser;

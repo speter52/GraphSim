@@ -1,7 +1,7 @@
 package com;
 
 import com.MessageHandler.MessagePasser;
-import com.Node.CustomNode;
+import com.Network.CustomNode;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
