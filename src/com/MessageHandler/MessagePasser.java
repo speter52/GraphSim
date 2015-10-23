@@ -51,7 +51,12 @@ public class MessagePasser
     /**
      * A dictionary that maps a clusterID wih the port that it listens on.
      */
-    private Map<String,SocketInfo> clusterSocketMap;
+    private Map<String,SocketInfo> clusterPortMap;
+
+    /**
+     * A dictionary that maps a clusterID with the Socket that is listening on.
+     */
+    private Map<String,Socket> clusterSocketMap;
 
     /**
      * Primary constructor that builds communication array from nodes in cluster.
@@ -106,7 +111,9 @@ public class MessagePasser
      */
     private void buildNodeClusterMaps(Set<String> otherClusters, Map networkRepresentation)
     {
-        this.clusterSocketMap = new HashMap();
+        this.clusterPortMap = new HashMap();
+
+        this.clusterSocketMap = new HashMap<>();
 
         this.nodeToClusterMap = new HashMap();
 
@@ -114,7 +121,7 @@ public class MessagePasser
         {
             SocketInfo otherClusterSocketInfo = Parser.getSocketInfo(clusterID, networkRepresentation);
 
-            this.clusterSocketMap.put(clusterID, otherClusterSocketInfo);
+            this.clusterPortMap.put(clusterID, otherClusterSocketInfo);
 
             Map<Integer,Object> nodeList = Parser.getNodesInCluster(clusterID, networkRepresentation);
 
@@ -134,7 +141,7 @@ public class MessagePasser
         }
         catch (IOException ex)
         {
-            //ex.printStackTrace();
+            ex.printStackTrace();
 
             return null;
         }
@@ -156,21 +163,30 @@ public class MessagePasser
 
             Socket receivingSocket = null;
 
-            while(receivingSocket == null)
+            if(clusterSocketMap.containsKey(clusterID))
             {
-                receivingSocket = createSocket(clusterSocketMap.get(clusterID));
-
-                if(receivingSocket == null)
+                receivingSocket = clusterSocketMap.get(clusterID);
+            }
+            else
+            {
+                while(receivingSocket == null)
                 {
-                    System.out.println("Couldn't open socket to cluster, trying again...");
+                    receivingSocket = createSocket(clusterPortMap.get(clusterID));
 
-                    Thread.sleep(2000);
+                    if(receivingSocket == null)
+                    {
+                        System.out.println("Couldn't open socket to cluster, trying again...");
+
+                        Thread.sleep(2000);
+                    }
                 }
             }
 
             DataOutputStream out = new DataOutputStream(receivingSocket.getOutputStream());
 
             out.writeUTF(messageString);
+
+            receivingSocket.close();
         }
         catch (Exception ex)
         {
