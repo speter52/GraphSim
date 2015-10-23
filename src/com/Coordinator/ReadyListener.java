@@ -68,12 +68,12 @@ public class ReadyListener extends Thread
         {
             System.out.println("Waiting for other clusters...");
 
-            Socket socketToClient = listeningSocket.accept();
-
-            DataInputStream in = new DataInputStream(socketToClient.getInputStream());
-
             while(clusterResponsesReceived.size() < otherClusters.size())
             {
+                Socket socketToClient = listeningSocket.accept();
+
+                DataInputStream in = new DataInputStream(socketToClient.getInputStream());
+
                 Message incomingMessage = new Message(in.readUTF());
 
                 String sendingCluster = incomingMessage.getArgument("senderCluster");
