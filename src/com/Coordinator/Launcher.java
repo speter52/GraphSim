@@ -29,6 +29,13 @@ public class Launcher
             // Read input file
             Map networkRepresentation = Parser.readYAMLFile(inputFile);
 
+            if(networkRepresentation == null)
+            {
+                System.out.println("Invalid input file. Exiting.");
+
+                System.exit(0);
+            }
+
             MessagePasser messagePasser = new MessagePasser(networkRepresentation);
 
             // Creating listening socket to use for ready messages and messages from other nodes
