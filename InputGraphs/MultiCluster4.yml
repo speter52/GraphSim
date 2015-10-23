@@ -1,0 +1,32 @@
+Cluster0:
+  isSelfCluster: false
+  ip: localhost
+  port: 20005
+  nodeList:
+    0:
+      neighbors: [1,2,3,4,5]
+      data:
+        x: 2
+    1:
+      neighbors: [1,2,3,4,5]
+      data:
+        x: 4
+    2:
+      neighbors: [1,2,3,4,5]
+      data:
+        x: 6
+
+Cluster1:
+  isSelfCluster: true
+  ip: localhost
+  port: 20009
+  nodeList:
+    3:
+      neighbors: [1,2,3,4,5]
+      data:
+        x: 8
+    4:
+      neighbors: [1,2,3,4,5]
+      data:
+        x: 10
+
