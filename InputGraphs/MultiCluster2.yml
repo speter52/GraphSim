@@ -1,7 +1,7 @@
 Cluster0:
   isSelfCluster: false
   ip: localhost
-  port: 20002
+  port: 20005
   nodeList:
     0:
       neighbors: [4,1]
@@ -19,7 +19,7 @@ Cluster0:
 Cluster1:
   isSelfCluster: true
   ip: localhost
-  port: 20003
+  port: 20009
   nodeList:
     3:
       neighbors: [2,4]
