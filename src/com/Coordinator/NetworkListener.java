@@ -19,11 +19,6 @@ public class NetworkListener extends Thread
     private ServerSocket listeningSocket;
 
     /**
-     * Input stream from listening socket.
-     */
-    private DataInputStream in;
-
-    /**
      * MessagePasser that will handle sending messages to the nodes in this cluster.
      */
     private MessagePasser messagePasser;

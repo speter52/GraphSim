@@ -15,6 +15,11 @@ import java.util.Set;
  */
 public class ReadyListener extends Thread
 {
+    // TEMP Colors for console output
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BOLD = "\u001B[1m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+
     /**
      * Socket that this cluster listens on for ready messages from other clusters.
      */
@@ -57,7 +62,7 @@ public class ReadyListener extends Thread
     {
         try
         {
-            System.out.println("Waiting for other clusters...");
+            System.out.println(ANSI_BOLD + ANSI_CYAN + "Waiting for other clusters..." + ANSI_RESET);
 
             while(clusterResponsesReceived.size() < otherClusters.size())
             {

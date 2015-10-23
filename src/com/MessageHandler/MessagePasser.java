@@ -168,7 +168,12 @@ public class MessagePasser
 
                 if(receivingSocket == null)
                 {
-                    System.out.println("Couldn't open socket to cluster, trying again...");
+                    // TEMP Colors for console output
+                    String ANSI_RESET = "\u001B[0m";
+                    String ANSI_BOLD = "\u001B[1m";
+                    String ANSI_YELLOW = "\u001B[33m";
+
+                    System.out.println(ANSI_BOLD + ANSI_YELLOW + "Couldn't open socket to cluster, trying again..." + ANSI_RESET);
 
                     Thread.sleep(2000);
                 }
