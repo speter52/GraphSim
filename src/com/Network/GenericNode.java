@@ -90,7 +90,7 @@ public abstract class GenericNode extends Thread
      */
     public void sendMessage(int receiverID, Message message)
     {
-        message.addArgument("ReceiverID", Integer.toString(receiverID));
+        message.addArgument("receiverID", Integer.toString(receiverID));
 
         messagePasser.sendMessage(receiverID, message);
     }

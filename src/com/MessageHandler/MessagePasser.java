@@ -199,7 +199,7 @@ public class MessagePasser
             {
                 String messageString = message.serializeMessage();
 
-                Integer receiverIndex = nodeIDToIndexMap.get(receiverID);
+                int receiverIndex = nodeIDToIndexMap.get(receiverID);
 
                 communicationArray[receiverIndex].put(messageString);
             }
