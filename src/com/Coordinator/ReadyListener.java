@@ -63,6 +63,8 @@ public class ReadyListener extends Thread
     {
         try
         {
+            System.out.println("Waiting for other clusters...");
+
             Socket socketToClient = listeningSocket.accept();
 
             DataInputStream in = new DataInputStream(socketToClient.getInputStream());

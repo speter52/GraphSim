@@ -20,7 +20,7 @@ public class Cluster
     /**
      * List of nodes in this cluster.
      */
-    private List<CustomNode> nodeList;
+    private Map<Integer,CustomNode> nodeList;
 
     /**
      * MessagePasser for all the nodes in this cluster.
@@ -36,7 +36,7 @@ public class Cluster
 
         startMessage.addArgument("Type", "Start");
 
-        for (CustomNode node : nodeList)
+        for (CustomNode node : nodeList.values())
         {
             node.sendMessage(node.getNodeID(), startMessage);
         }
@@ -49,7 +49,7 @@ public class Cluster
      */
     private void buildNodes(Map<Integer,Object> nodesRepresentation)
     {
-        nodeList = new ArrayList<CustomNode>();
+        nodeList = new HashMap<>();
 
         // Parse representation to build each node
         for(Map.Entry nodeEntry : nodesRepresentation.entrySet())
@@ -62,7 +62,7 @@ public class Cluster
 
             newNode.start();
 
-            nodeList.add(nodeID, newNode);
+            nodeList.put(nodeID, newNode);
         }
     }
 

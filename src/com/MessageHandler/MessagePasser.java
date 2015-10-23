@@ -89,9 +89,9 @@ public class MessagePasser
         this.nodeIDToIndexMap = new HashMap();
 
         // Initialize communication array with empty queues
-        for(Integer key: nodesRepresentation.keySet())
+        for(Integer nodeID: nodesRepresentation.keySet())
         {
-            nodeIDToIndexMap.put(index, key);
+            nodeIDToIndexMap.put(nodeID, index);
 
             communicationArray[index] = new LinkedBlockingQueue<String>();
 
