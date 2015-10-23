@@ -61,8 +61,8 @@ public class CustomNode extends GenericNode
     {
         int responseValue = Integer.parseInt(incomingMessage.getArgument("x"));
 
-        System.out.println(ANSI_GREEN + "Node " + nodeID + " received " + responseValue + " from Node " +
-                incomingMessage.getArgument("ID") + ANSI_RESET);
+        System.out.println(ANSI_GREEN + "Node " + selfID + " received " + responseValue + " from Node " +
+                incomingMessage.getArgument("senderID") + ANSI_RESET);
 
         responsesReceived.add(responseValue);
 
@@ -73,7 +73,7 @@ public class CustomNode extends GenericNode
 
             data.put("x", averageOfResponses);
 
-            System.out.println(ANSI_BLUE + ANSI_BOLD + "Node " + nodeID + " updated value of X to " +
+            System.out.println(ANSI_BLUE + ANSI_BOLD + "Node " + selfID + " updated value of X to " +
                     averageOfResponses + ANSI_RESET);
 
             responsesReceived.clear();

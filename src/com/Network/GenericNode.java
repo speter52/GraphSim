@@ -14,7 +14,7 @@ public abstract class GenericNode extends Thread
     /**
      * ID of this node.
      */
-    protected int nodeID;
+    protected int selfID;
 
     /**
      * Dictionary of data in node.
@@ -60,11 +60,11 @@ public abstract class GenericNode extends Thread
 
     /**
      * Getter for node ID
-     * @return nodeID
+     * @return selfID
      */
-    public int getNodeID()
+    public int getSelfID()
     {
-        return nodeID;
+        return selfID;
     }
 
     /**
@@ -74,7 +74,7 @@ public abstract class GenericNode extends Thread
     public GenericNode(int nodeID, MessagePasser messagePasser, ArrayList neighbors,
                        Map<String, Integer> data)
     {
-        this.nodeID = nodeID;
+        this.selfID = nodeID;
 
         this.messagePasser = messagePasser;
 
@@ -119,7 +119,7 @@ public abstract class GenericNode extends Thread
         // TODO: Send all values
         outgoingMessage.addArgument("x", data.get("x").toString());
 
-        outgoingMessage.addArgument("ID", Integer.toString(nodeID));
+        outgoingMessage.addArgument("senderID", Integer.toString(selfID));
 
         sendMessageToNeighbors(outgoingMessage);
     }
@@ -131,7 +131,7 @@ public abstract class GenericNode extends Thread
     {
         while(true)
         {
-            String incomingMessage = messagePasser.waitAndRetrieveMessage(nodeID);
+            String incomingMessage = messagePasser.waitAndRetrieveMessage(selfID);
 
             processMessage(incomingMessage);
         }

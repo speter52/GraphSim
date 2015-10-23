@@ -2,7 +2,6 @@ package com.Network;
 
 import com.MessageHandler.Message;
 import com.MessageHandler.MessagePasser;
-import com.Network.CustomNode;
 import com.Parser;
 
 import java.util.*;
@@ -38,7 +37,7 @@ public class Cluster
 
         for (CustomNode node : nodeList.values())
         {
-            node.sendMessage(node.getNodeID(), startMessage);
+            node.sendMessage(node.getSelfID(), startMessage);
         }
     }
 

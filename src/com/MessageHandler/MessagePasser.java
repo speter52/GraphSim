@@ -44,7 +44,7 @@ public class MessagePasser
     private Map<Integer,Integer> nodeIDToIndexMap;
 
     /**
-     * A dictionary that maps a nodeID to the ID of the cluster it belongs to.
+     * A dictionary that maps a selfID to the ID of the cluster it belongs to.
      */
     private Map<Integer,String> nodeToClusterMap;
 

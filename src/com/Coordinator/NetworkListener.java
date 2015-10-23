@@ -74,6 +74,7 @@ public class NetworkListener extends Thread
                     String sendingCluster = incomingMessage.getArgument("senderCluster");
 
                     System.out.println("Message received from " + sendingCluster + " sending to Node " + receiverID);
+                    System.out.println(incomingMessage.serializeMessage());
 
                     messagePasser.sendMessage(receiverID, incomingMessage);
             }
