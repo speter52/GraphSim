@@ -150,6 +150,8 @@ public class MessagePasser
     {
         try
         {
+            message.addArgument("senderCluster", selfClusterID);
+
             String messageString = message.serializeMessage();
 
             Socket receivingSocket = null;
