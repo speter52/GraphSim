@@ -141,7 +141,7 @@ public class MessagePasser
         }
         catch (IOException ex)
         {
-            //ex.printStackTrace();
+            ex.printStackTrace();
 
             return null;
         }

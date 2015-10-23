@@ -61,22 +61,22 @@ public class NetworkListener extends Thread
     {
         try
         {
-            Socket socketToClient = listeningSocket.accept();
-
-            DataInputStream in = new DataInputStream(socketToClient.getInputStream());
-
             while(true)
             {
-                    Message incomingMessage = new Message(in.readUTF());
+                Socket socketToClient = listeningSocket.accept();
 
-                    int receiverID = Integer.parseInt(incomingMessage.getArgument("receiverID"));
+                DataInputStream in = new DataInputStream(socketToClient.getInputStream());
 
-                    String sendingCluster = incomingMessage.getArgument("senderCluster");
+                Message incomingMessage = new Message(in.readUTF());
 
-                    System.out.println("Message received from " + sendingCluster + " sending to Node " + receiverID);
-                    System.out.println(incomingMessage.serializeMessage());
+                int receiverID = Integer.parseInt(incomingMessage.getArgument("receiverID"));
 
-                    messagePasser.sendMessage(receiverID, incomingMessage);
+                String sendingCluster = incomingMessage.getArgument("senderCluster");
+
+                System.out.println("Message received from " + sendingCluster + " sending to Node " + receiverID);
+                System.out.println(incomingMessage.serializeMessage());
+
+                messagePasser.sendMessage(receiverID, incomingMessage);
             }
         }
         catch(IOException ex)
