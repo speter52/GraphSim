@@ -75,6 +75,8 @@ public class ReadyListener extends Thread
 
                 String sendingCluster = incomingMessage.getArgument("clusterID");
 
+                System.out.println("Ready received from " + sendingCluster);
+
                 clusterResponsesReceived.add(sendingCluster);
             }
 
