@@ -1,5 +1,5 @@
 Cluster0:
-  isSelfCluster: true
+  isSelfCluster: false
   ip: localhost
   port: 20002
   nodeList:
@@ -17,7 +17,7 @@ Cluster0:
         x: 6
 
 Cluster1:
-  isSelfCluster: false
+  isSelfCluster: true
   ip: localhost
   port: 20003
   nodeList:

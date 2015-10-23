@@ -13,14 +13,24 @@ import java.util.*;
 public class Cluster
 {
     /**
+     * ID of cluster
+     */
+    public String clusterID;
+
+    /**
      * List of nodes in this cluster.
      */
     private List<CustomNode> nodeList;
 
     /**
+     * MessagePasser for all the nodes in this cluster.
+     */
+    public MessagePasser messagePasser;
+
+    /**
      * Send a start message to all the nodes in this cluster.
      */
-    public void startNetwork()
+    public void startWork()
     {
         Message startMessage = new Message();
 
@@ -35,10 +45,9 @@ public class Cluster
     /**
      * Iterates through the representation of the nodes and parses the entries to build each node.
      * @param nodesRepresentation JSON representation
-     * @param messagePasser of message queues for communication between nodes
      * @return List of nodes
      */
-    private void buildNodes(Map<Integer,Object> nodesRepresentation, MessagePasser messagePasser)
+    private void buildNodes(Map<Integer,Object> nodesRepresentation)
     {
         nodeList = new ArrayList<CustomNode>();
 
@@ -59,17 +68,15 @@ public class Cluster
 
     /**
      * Primary constructor that uses a graph representation in YAML to build the network of nodes.
-     * @param inputFile
+     * @param networkRepresentation
      * @return List of Nodes created.
      */
-    public Cluster(String inputFile)
+    public Cluster(Map networkRepresentation, MessagePasser messagePasser)
     {
-        Map<Integer,Object> networkRepresentation = Parser.readYAMLFile(inputFile);
-
         Map<Integer,Object> nodesRepresentation = Parser.getNodesInSelfCluster(networkRepresentation);
 
-        MessagePasser messagePasser = new MessagePasser(nodesRepresentation);
+        this.messagePasser = messagePasser;
 
-        buildNodes(nodesRepresentation, messagePasser);
+        buildNodes(nodesRepresentation);
     }
 }

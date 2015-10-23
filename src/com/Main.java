@@ -1,10 +1,12 @@
 package com;
 
+import com.Coordinator.Launcher;
+
 public class Main {
 
     public static void main(String[] args) throws InterruptedException
     {
-        Coordinator.launchNetwork("InputGraphs/InputGraph1.yml");
+        Launcher.launchNetwork("InputGraphs/InputGraph1.yml");
 
         Thread.sleep(50000);
 
