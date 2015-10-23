@@ -148,7 +148,6 @@ public class MessagePasser
     }
 
     /**
-     * TODO: Figure out how to keep sockets open
      * Send a message to another cluster on the network.
      * @param clusterID ID of receiving cluster
      * @param message

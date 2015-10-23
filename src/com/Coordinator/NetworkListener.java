@@ -1,13 +1,10 @@
 package com.Coordinator;
 
-import com.Helpers.SocketInfo;
 import com.MessageHandler.Message;
 import com.MessageHandler.MessagePasser;
-import com.sun.corba.se.spi.activation.Server;
 
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -31,19 +28,15 @@ public class NetworkListener extends Thread
      */
     private MessagePasser messagePasser;
 
-    public NetworkListener(SocketInfo socketInfo, MessagePasser messagePasser, ServerSocket listeningSocket)
+    /**
+     * Primary constructor
+     * @param messagePasser
+     * @param listeningSocket
+     */
+    public NetworkListener(MessagePasser messagePasser, ServerSocket listeningSocket)
     {
         try
         {
-            System.out.println("Port: " + socketInfo.getPort());
-
-            /*
-            this.listeningSocket = new ServerSocket();
-
-            this.listeningSocket.setReuseAddress(true);
-
-            this.listeningSocket.bind(new InetSocketAddress(socketInfo.getPort()));
-            */
             this.listeningSocket = listeningSocket;
 
             this.messagePasser =  messagePasser;

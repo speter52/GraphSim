@@ -39,6 +39,11 @@ public class Parser
         return networkRepresentation;
     }
 
+    /**
+     * Get all the nodes that will run on this cluster.
+     * @param networkRepresentation
+     * @return
+     */
     public static Map getNodesInSelfCluster(Map networkRepresentation)
     {
         String selfClusterID = Parser.getSelfClusterID(networkRepresentation);
@@ -57,20 +62,6 @@ public class Parser
         Map clusterEntry = (Map)networkRepresentation.get(clusterID);
 
         return (Map)clusterEntry.get("nodeList");
-        /*
-        Map selfCluster;
-
-        for(Map clusterEntry: networkRepresentation)
-        {
-            boolean runOnThisInstance = (boolean)networkRepresentation.get("onThisInstance");
-            if(runOnThisInstance)
-            {
-                selfCluster = clusterEntry;
-            }
-        }
-
-        return (Map)selfCluster.get("nodeList");
-        */
     }
 
     /**

@@ -1,11 +1,9 @@
 package com.Coordinator;
 
-import com.Helpers.SocketInfo;
 import com.MessageHandler.Message;
 
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket; import java.util.ArrayList;
 import java.util.List;
@@ -31,22 +29,15 @@ public class ReadyListener extends Thread
      * A list of all the clusters that have sent ready messages.
      */
     List<String> clusterResponsesReceived;
+
     /**
      * Constructor for ReadyListener.
-     * @param socketInfo Port to listen on
      * @param otherClusters ID's of other clusters in network
      */
-    public ReadyListener(SocketInfo socketInfo, Set<String> otherClusters, ServerSocket listeningSocket)
+    public ReadyListener(Set<String> otherClusters, ServerSocket listeningSocket)
     {
         try
         {
-            /*
-            this.listeningSocket = new ServerSocket();
-
-            this.listeningSocket.setReuseAddress(true);
-
-            this.listeningSocket.bind(new InetSocketAddress(socketInfo.getPort()));
-            */
             this.listeningSocket = listeningSocket;
 
             this.otherClusters = otherClusters;
@@ -82,8 +73,6 @@ public class ReadyListener extends Thread
 
                 clusterResponsesReceived.add(sendingCluster);
             }
-
-            //socketToClient.close();
         }
         catch (IOException ex)
         {

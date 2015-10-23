@@ -16,8 +16,8 @@ import java.util.Map;
  */
 public class Launcher
 {
-
     /**
+     * TODO: Refactor function
      * Build nodes in this cluster, wait for all the other clusters to start up, and then send out start messages
      * to nodes on this cluster.
      * @param inputFile
@@ -26,34 +26,37 @@ public class Launcher
     {
         try
         {
+            // Read input file
             Map networkRepresentation = Parser.readYAMLFile(inputFile);
 
             MessagePasser messagePasser = new MessagePasser(networkRepresentation);
 
-            /////////////Hacky code//////////////
-
+            // Creating listening socket to use for ready messages and messages from other nodes
             ServerSocket listeningSocket = new ServerSocket();
 
             listeningSocket.setReuseAddress(true);
 
             listeningSocket.bind(new InetSocketAddress(messagePasser.socketInfo.getPort()));
 
-            /////////////Temp hacky code^^^^^^^^^^////////////////
-
-            Thread readyListener = new ReadyListener(messagePasser.socketInfo, messagePasser.otherClusters, listeningSocket);
+            // Start listening for Ready messages from other clusters
+            Thread readyListener = new ReadyListener(messagePasser.otherClusters, listeningSocket);
 
             readyListener.start();
 
             Cluster selfCluster = new Cluster(networkRepresentation, messagePasser);
 
+            // Let other clusters in network know this cluster is ready
             notifyNetworkReady(messagePasser);
 
+            // Wait for all clusters to become ready
             readyListener.join();
 
-            Thread networkListener = new NetworkListener(messagePasser.socketInfo, messagePasser, listeningSocket);
+            // Begin listening for messages from nodes of other clusters
+            Thread networkListener = new NetworkListener(messagePasser, listeningSocket);
 
             networkListener.start();
 
+            // Let cluster start processing work
             selfCluster.startWork();
         }
         catch(Exception ex)
