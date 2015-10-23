@@ -36,21 +36,24 @@ public class ReadyListener extends Thread
      * @param socketInfo Port to listen on
      * @param otherClusters ID's of other clusters in network
      */
-    public ReadyListener(SocketInfo socketInfo, Set<String> otherClusters)
+    public ReadyListener(SocketInfo socketInfo, Set<String> otherClusters, ServerSocket listeningSocket)
     {
         try
         {
+            /*
             this.listeningSocket = new ServerSocket();
 
             this.listeningSocket.setReuseAddress(true);
 
             this.listeningSocket.bind(new InetSocketAddress(socketInfo.getPort()));
+            */
+            this.listeningSocket = listeningSocket;
 
             this.otherClusters = otherClusters;
 
             this.clusterResponsesReceived = new ArrayList<>();
         }
-        catch (IOException ex)
+        catch (Exception ex)
         {
             ex.printStackTrace();
         }
@@ -80,7 +83,7 @@ public class ReadyListener extends Thread
                 clusterResponsesReceived.add(sendingCluster);
             }
 
-            socketToClient.close();
+            //socketToClient.close();
         }
         catch (IOException ex)
         {

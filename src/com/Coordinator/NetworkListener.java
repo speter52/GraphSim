@@ -3,6 +3,7 @@ package com.Coordinator;
 import com.Helpers.SocketInfo;
 import com.MessageHandler.Message;
 import com.MessageHandler.MessagePasser;
+import com.sun.corba.se.spi.activation.Server;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -21,23 +22,33 @@ public class NetworkListener extends Thread
     private ServerSocket listeningSocket;
 
     /**
+     * Input stream from listening socket.
+     */
+    private DataInputStream in;
+
+    /**
      * MessagePasser that will handle sending messages to the nodes in this cluster.
      */
     private MessagePasser messagePasser;
 
-    public NetworkListener(SocketInfo socketInfo, MessagePasser messagePasser)
+    public NetworkListener(SocketInfo socketInfo, MessagePasser messagePasser, ServerSocket listeningSocket)
     {
         try
         {
+            System.out.println("Port: " + socketInfo.getPort());
+
+            /*
             this.listeningSocket = new ServerSocket();
 
             this.listeningSocket.setReuseAddress(true);
 
             this.listeningSocket.bind(new InetSocketAddress(socketInfo.getPort()));
+            */
+            this.listeningSocket = listeningSocket;
 
             this.messagePasser =  messagePasser;
         }
-        catch(IOException ex)
+        catch(Exception ex)
         {
             ex.printStackTrace();
         }

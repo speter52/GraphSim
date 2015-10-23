@@ -5,6 +5,10 @@ import com.MessageHandler.MessagePasser;
 import com.Network.Cluster;
 import com.Parser;
 
+import java.io.DataInputStream;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Map;
 
 /**
@@ -26,7 +30,17 @@ public class Launcher
 
             MessagePasser messagePasser = new MessagePasser(networkRepresentation);
 
-            Thread readyListener = new ReadyListener(messagePasser.socketInfo, messagePasser.otherClusters);
+            /////////////Hacky code//////////////
+
+            ServerSocket listeningSocket = new ServerSocket();
+
+            listeningSocket.setReuseAddress(true);
+
+            listeningSocket.bind(new InetSocketAddress(messagePasser.socketInfo.getPort()));
+
+            /////////////Temp hacky code^^^^^^^^^^////////////////
+
+            Thread readyListener = new ReadyListener(messagePasser.socketInfo, messagePasser.otherClusters, listeningSocket);
 
             readyListener.start();
 
@@ -36,7 +50,7 @@ public class Launcher
 
             readyListener.join();
 
-            Thread networkListener = new NetworkListener(messagePasser.socketInfo, messagePasser);
+            Thread networkListener = new NetworkListener(messagePasser.socketInfo, messagePasser, listeningSocket);
 
             networkListener.start();
 
