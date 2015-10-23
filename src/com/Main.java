@@ -6,7 +6,7 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException
     {
-        Launcher.launchNetwork("InputGraphs/InputGraph2.yml");
+        Launcher.launchNetwork("InputGraphs/InputGraph1.yml");
 
         Thread.sleep(50000);
 

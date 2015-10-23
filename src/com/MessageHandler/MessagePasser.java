@@ -134,7 +134,7 @@ public class MessagePasser
         }
         catch (IOException ex)
         {
-            ex.printStackTrace();
+            //ex.printStackTrace();
 
             return null;
         }
@@ -152,13 +152,25 @@ public class MessagePasser
         {
             String messageString = message.serializeMessage();
 
-            Socket receivingSocket = createSocket(clusterSocketMap.get(clusterID));
+            Socket receivingSocket = null;
+
+            while(receivingSocket == null)
+            {
+                receivingSocket = createSocket(clusterSocketMap.get(clusterID));
+
+                if(receivingSocket == null)
+                {
+                    System.out.println("Couldn't open socket to cluster, trying again...");
+
+                    Thread.sleep(2000);
+                }
+            }
 
             DataOutputStream out = new DataOutputStream(receivingSocket.getOutputStream());
 
             out.writeUTF(messageString);
         }
-        catch (IOException ex)
+        catch (Exception ex)
         {
             ex.printStackTrace();
         }
