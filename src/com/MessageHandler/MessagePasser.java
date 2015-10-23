@@ -163,12 +163,14 @@ public class MessagePasser
 
             Socket receivingSocket = null;
 
+            /*
             if(clusterSocketMap.containsKey(clusterID))
             {
                 receivingSocket = clusterSocketMap.get(clusterID);
             }
             else
             {
+            */
                 while(receivingSocket == null)
                 {
                     receivingSocket = createSocket(clusterPortMap.get(clusterID));
@@ -181,8 +183,8 @@ public class MessagePasser
                     }
                 }
 
-                clusterSocketMap.put(clusterID, receivingSocket);
-            }
+            //    clusterSocketMap.put(clusterID, receivingSocket);
+           // }
 
             DataOutputStream out = new DataOutputStream(receivingSocket.getOutputStream());
 
