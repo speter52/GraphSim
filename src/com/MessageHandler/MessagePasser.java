@@ -162,28 +162,17 @@ public class MessagePasser
 
             Socket receivingSocket = null;
 
-            /*
-            if(clusterSocketMap.containsKey(clusterID))
+            while(receivingSocket == null)
             {
-                receivingSocket = clusterSocketMap.get(clusterID);
-            }
-            else
-            {
-            */
-                while(receivingSocket == null)
+                receivingSocket = createSocket(clusterPortMap.get(clusterID));
+
+                if(receivingSocket == null)
                 {
-                    receivingSocket = createSocket(clusterPortMap.get(clusterID));
+                    System.out.println("Couldn't open socket to cluster, trying again...");
 
-                    if(receivingSocket == null)
-                    {
-                        System.out.println("Couldn't open socket to cluster, trying again...");
-
-                        Thread.sleep(2000);
-                    }
+                    Thread.sleep(2000);
                 }
-
-            //    clusterSocketMap.put(clusterID, receivingSocket);
-           // }
+            }
 
             DataOutputStream out = new DataOutputStream(receivingSocket.getOutputStream());
 
