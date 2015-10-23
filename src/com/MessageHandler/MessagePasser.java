@@ -141,7 +141,7 @@ public class MessagePasser
         }
         catch (IOException ex)
         {
-            ex.printStackTrace();
+            //ex.printStackTrace();
 
             return null;
         }
@@ -180,13 +180,13 @@ public class MessagePasser
                         Thread.sleep(2000);
                     }
                 }
+
+                clusterSocketMap.put(clusterID, receivingSocket);
             }
 
             DataOutputStream out = new DataOutputStream(receivingSocket.getOutputStream());
 
             out.writeUTF(messageString);
-
-            receivingSocket.close();
         }
         catch (Exception ex)
         {
