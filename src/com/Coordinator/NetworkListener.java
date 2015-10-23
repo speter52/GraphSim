@@ -6,6 +6,7 @@ import com.MessageHandler.MessagePasser;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -28,7 +29,11 @@ public class NetworkListener extends Thread
     {
         try
         {
-            this.listeningSocket = new ServerSocket(socketInfo.getPort());
+            this.listeningSocket = new ServerSocket();
+
+            this.listeningSocket.setReuseAddress(true);
+
+            this.listeningSocket.bind(new InetSocketAddress(socketInfo.getPort()));
 
             this.messagePasser =  messagePasser;
         }
@@ -54,6 +59,10 @@ public class NetworkListener extends Thread
                     Message incomingMessage = new Message(in.readUTF());
 
                     int receiverID = Integer.parseInt(incomingMessage.getArgument("receiverID"));
+
+                    String sendingCluster = incomingMessage.getArgument("senderCluster");
+
+                    System.out.println("Message received from " + sendingCluster + " sending to Node " + receiverID);
 
                     messagePasser.sendMessage(receiverID, incomingMessage);
             }

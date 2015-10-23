@@ -26,15 +26,19 @@ public class Launcher
 
             MessagePasser messagePasser = new MessagePasser(networkRepresentation);
 
-            Thread listener = new ReadyListener(messagePasser.socketInfo, messagePasser.otherClusters);
+            Thread readyListener = new ReadyListener(messagePasser.socketInfo, messagePasser.otherClusters);
 
-            listener.start();
+            readyListener.start();
 
             Cluster selfCluster = new Cluster(networkRepresentation, messagePasser);
 
             notifyNetworkReady(messagePasser);
 
-            listener.join();
+            readyListener.join();
+
+            Thread networkListener = new NetworkListener(messagePasser.socketInfo, messagePasser);
+
+            networkListener.start();
 
             selfCluster.startWork();
         }

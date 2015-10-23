@@ -69,7 +69,7 @@ public class ReadyListener extends Thread
 
             DataInputStream in = new DataInputStream(socketToClient.getInputStream());
 
-            while(clusterResponsesReceived.size() <= otherClusters.size())
+            while(clusterResponsesReceived.size() < otherClusters.size())
             {
                 Message incomingMessage = new Message(in.readUTF());
 
