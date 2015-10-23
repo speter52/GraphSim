@@ -19,7 +19,7 @@ public abstract class GenericNode extends Thread
     /**
      * Dictionary of data in node.
      */
-    protected Map<String,Integer> data;
+    protected Map data;
 
     /**
      * List of this node's neighbors.
@@ -72,7 +72,7 @@ public abstract class GenericNode extends Thread
      * @param messagePasser Array of message queues used for node communication
      */
     public GenericNode(int nodeID, MessagePasser messagePasser, ArrayList neighbors,
-                       Map<String, Integer> data)
+                       Map data)
     {
         this.selfID = nodeID;
 

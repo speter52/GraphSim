@@ -13,7 +13,7 @@ import java.util.Map;
 public class CustomNode extends GenericNode
 {
     public CustomNode(int nodeID, MessagePasser messagePasser, ArrayList neighbors,
-                      Map<String, Integer> data)
+                      Map data)
     {
         super(nodeID, messagePasser, neighbors, data);
     }
@@ -32,16 +32,16 @@ public class CustomNode extends GenericNode
     /**
      * List to keep track of the response values received from other nodes.
      */
-    private List<Integer> responsesReceived = new ArrayList<Integer>();
+    private List<Double> responsesReceived = new ArrayList<>();
 
     /**
      * Calculate and return the average of a list of ints.
      * @param listOfInts
      * @return average
      */
-    private int calculateAverageOfList(List<Integer> listOfInts)
+    private double calculateAverageOfList(List<Double> listOfInts)
     {
-        int sum = 0;
+        double sum = 0;
 
         for(double item : listOfInts)
         {
@@ -59,7 +59,7 @@ public class CustomNode extends GenericNode
     @Override
     protected void processResponse(Message incomingMessage)
     {
-        int responseValue = Integer.parseInt(incomingMessage.getArgument("x"));
+        Double responseValue = Double.parseDouble(incomingMessage.getArgument("x"));
 
         System.out.println(ANSI_GREEN + "Node " + selfID + " received " + responseValue + " from Node " +
                 incomingMessage.getArgument("senderID") + ANSI_RESET);
@@ -69,7 +69,7 @@ public class CustomNode extends GenericNode
         // Once all the neighboring responses are received, average them and update x
         if(responsesReceived.size() >= neighbors.size())
         {
-            int averageOfResponses = calculateAverageOfList(responsesReceived);
+            double averageOfResponses = calculateAverageOfList(responsesReceived);
 
             data.put("x", averageOfResponses);
 
