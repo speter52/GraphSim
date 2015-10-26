@@ -22,13 +22,6 @@ public class CustomNode extends GenericNode
      * USER WRITTEN CODE BELOW TO PROCESS MESSAGES AND COMMUNICATE WITH NEIGHBORS
      * USER NEEDS TO IMPLEMENT ABSTRACT processMessage() METHOD FROM SUPERCLASS
      */
-
-    // Colors for console output
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_BOLD = "\u001B[1m";
-
     private List<Double> responsesReceived = new ArrayList<>();
 
     /**
@@ -48,23 +41,45 @@ public class CustomNode extends GenericNode
         return sum/listOfInts.size();
     }
 
+    private void algorithm1Prologue()
+    {
+        double t = (double)data.get("t");
+
+        double x = (double)data.get("x");
+
+        //Step 1: t <- t + 1
+        t = t + 1;
+
+        double step2Subtractor = selfID*2 + 1;
+
+        //Step 2: y <- (1/t)(x - {1,3,5,7,9})
+        double y = (1./t)*(x - step2Subtractor);
+
+        data.put("t",t);
+
+        data.put("y",y);
+
+        data.put("xPlusy",x + y);
+
+        // Step 3: Send x + y to all neighbors
+        sendValuesToNeighbors();
+    }
+
     @Override
     protected void processResponse(Message incomingMessage)
     {
-        Double xReceived = Double.parseDouble(incomingMessage.getData("x"));
+        // Step 4: Receive messages from all neighbors
+        Double xPlusy = Double.parseDouble(incomingMessage.getData("xPlusy"));
 
-        responsesReceived.add(xReceived);
+        responsesReceived.add(xPlusy);
 
-        System.out.println("Node " + selfID + " received " + xReceived + " from Node " +
+        System.out.println("Node " + selfID + " received " + xPlusy + " from Node " +
                 incomingMessage.getData("senderID"));
 
         if(responsesReceived.size() >= neighbors.size())
         {
+            // Step 5: After all messages are received from other nodes, set x to average
             double newX = calculateAverageOfList(responsesReceived);
-
-            double y = (Double)data.get("y");
-
-            newX = newX + y;
 
             data.put("x", newX);
 
@@ -73,6 +88,7 @@ public class CustomNode extends GenericNode
 
             responsesReceived.clear();
 
+            // Next iteration
             algorithm1Prologue();
         }
     }
@@ -83,22 +99,4 @@ public class CustomNode extends GenericNode
         algorithm1Prologue();
     }
 
-    private void algorithm1Prologue()
-    {
-        double t = (double)data.get("t");
-
-        double x = (double)data.get("x");
-
-        t = t + 1;
-
-        double step2Subtractor = selfID*2 + 1;
-
-        double y = (1./t)*(x - step2Subtractor);
-
-        data.put("t",t);
-
-        data.put("y",y);
-
-        sendValuesToNeighbors();
-    }
 }
