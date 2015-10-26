@@ -55,8 +55,8 @@ public class CustomNode extends GenericNode
 
         responsesReceived.add(xReceived);
 
-        System.out.println(ANSI_GREEN + "Node " + selfID + " received " + xReceived + " from Node " +
-                incomingMessage.getData("senderID") + ANSI_RESET);
+        System.out.println("Node " + selfID + " received " + xReceived + " from Node " +
+                incomingMessage.getData("senderID"));
 
         if(responsesReceived.size() >= neighbors.size())
         {
@@ -68,8 +68,8 @@ public class CustomNode extends GenericNode
 
             data.put("x", newX);
 
-            System.out.println(ANSI_BLUE + ANSI_BOLD + "Node " + selfID + " updated value of X to " +
-                    newX + ANSI_RESET);
+            System.out.println("Node " + selfID + " updated value of X to " +
+                    newX);
 
             responsesReceived.clear();
 
