@@ -29,9 +29,6 @@ public class CustomNode extends GenericNode
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_BOLD = "\u001B[1m";
 
-    /**
-     * List to keep track of the response values received from other nodes.
-     */
     private List<Double> responsesReceived = new ArrayList<>();
 
     /**
@@ -51,43 +48,57 @@ public class CustomNode extends GenericNode
         return sum/listOfInts.size();
     }
 
-    /**
-     * When a response is received from another node, add it to the response history. Once responses are
-     * received from all the neighbors, average that and mark it as your new value for x.
-     * @param incomingMessage
-     */
     @Override
     protected void processResponse(Message incomingMessage)
     {
-        Double responseValue = Double.parseDouble(incomingMessage.getArgument("x"));
+        Double xReceived = Double.parseDouble(incomingMessage.getData("x"));
 
-        System.out.println(ANSI_GREEN + "Node " + selfID + " received " + responseValue + " from Node " +
-                incomingMessage.getArgument("senderID") + ANSI_RESET);
+        responsesReceived.add(xReceived);
 
-        responsesReceived.add(responseValue);
+        System.out.println(ANSI_GREEN + "Node " + selfID + " received " + xReceived + " from Node " +
+                incomingMessage.getData("senderID") + ANSI_RESET);
 
-        // Once all the neighboring responses are received, average them and update x
         if(responsesReceived.size() >= neighbors.size())
         {
-            double averageOfResponses = calculateAverageOfList(responsesReceived);
+            double newX = calculateAverageOfList(responsesReceived);
 
-            data.put("x", averageOfResponses);
+            double y = (Double)data.get("y");
+
+            newX = newX + y;
+
+            data.put("x", newX);
 
             System.out.println(ANSI_BLUE + ANSI_BOLD + "Node " + selfID + " updated value of X to " +
-                    averageOfResponses + ANSI_RESET);
+                    newX + ANSI_RESET);
 
             responsesReceived.clear();
 
-            sendValuesToNeighbors();
+            algorithm1Prologue();
         }
     }
 
-    /**
-     * Process the start message that says the node can begin doing work
-     */
     @Override
     protected void startNode()
     {
+        algorithm1Prologue();
+    }
+
+    private void algorithm1Prologue()
+    {
+        double t = (double)data.get("t");
+
+        double x = (double)data.get("x");
+
+        t = t + 1;
+
+        double step2Subtractor = selfID*2 + 1;
+
+        double y = (1./t)*(x - step2Subtractor);
+
+        data.put("t",t);
+
+        data.put("y",y);
+
         sendValuesToNeighbors();
     }
 }

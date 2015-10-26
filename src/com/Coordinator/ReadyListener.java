@@ -72,7 +72,7 @@ public class ReadyListener extends Thread
 
                 Message incomingMessage = new Message(in.readUTF());
 
-                String sendingCluster = incomingMessage.getArgument("senderCluster");
+                String sendingCluster = incomingMessage.getData("senderCluster");
 
                 System.out.println("Ready received from " + sendingCluster);
 

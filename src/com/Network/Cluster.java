@@ -33,7 +33,7 @@ public class Cluster
     {
         Message startMessage = new Message();
 
-        startMessage.addArgument("Type", "Start");
+        startMessage.addData("Type", "Start");
 
         for (CustomNode node : nodeList.values())
         {

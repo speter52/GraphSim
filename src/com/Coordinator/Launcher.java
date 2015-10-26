@@ -5,10 +5,8 @@ import com.MessageHandler.MessagePasser;
 import com.Network.Cluster;
 import com.Parser;
 
-import java.io.DataInputStream;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.Map;
 
 /**
@@ -82,9 +80,9 @@ public class Launcher
         {
             Message readyMessage = new Message();
 
-            readyMessage.addArgument("Type", "Ready");
+            readyMessage.addData("Type", "Ready");
 
-            readyMessage.addArgument("SendingCluster", messagePasser.selfClusterID);
+            readyMessage.addData("SendingCluster", messagePasser.selfClusterID);
 
             messagePasser.sendMessageToCluster(receivingClusterID, readyMessage);
         }

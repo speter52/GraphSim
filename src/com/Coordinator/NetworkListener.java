@@ -57,7 +57,7 @@ public class NetworkListener extends Thread
 
                 Message incomingMessage = new Message(in.readUTF());
 
-                int receiverID = Integer.parseInt(incomingMessage.getArgument("receiverID"));
+                int receiverID = Integer.parseInt(incomingMessage.getData("receiverID"));
 
                 messagePasser.sendMessage(receiverID, incomingMessage);
             }

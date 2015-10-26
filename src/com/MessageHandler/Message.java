@@ -38,7 +38,7 @@ public class Message
      * @param key
      * @param value
      */
-    public void addArgument(String key, String value)
+    public void addData(String key, String value)
     {
         messageContents.put(key, value);
     }
@@ -48,7 +48,7 @@ public class Message
      * @param key Key of argument
      * @return Value of argument
      */
-    public String getArgument(String key)
+    public String getData(String key)
     {
         return messageContents.get(key);
     }

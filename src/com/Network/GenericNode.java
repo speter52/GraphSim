@@ -44,7 +44,7 @@ public abstract class GenericNode extends Thread
     {
         Message incomingMessage = new Message(messageString);
 
-        String messageType = incomingMessage.getArgument("Type");
+        String messageType = incomingMessage.getData("Type");
 
         switch (messageType)
         {
@@ -90,7 +90,7 @@ public abstract class GenericNode extends Thread
      */
     public void sendMessage(int receiverID, Message message)
     {
-        message.addArgument("receiverID", Integer.toString(receiverID));
+        message.addData("receiverID", Integer.toString(receiverID));
 
         messagePasser.sendMessage(receiverID, message);
     }
@@ -114,12 +114,18 @@ public abstract class GenericNode extends Thread
     {
         Message outgoingMessage = new Message();
 
-        outgoingMessage.addArgument("Type", "Response");
+        outgoingMessage.addData("Type", "Response");
 
-        // TODO: Send all values
-        outgoingMessage.addArgument("x", data.get("x").toString());
+        //TODO: Specify type of data map
+        //TODO: Seperate data values from message parameters
+        for(Object dataEntry: data.entrySet())
+        {
+            Map.Entry entry = (Map.Entry)dataEntry;
 
-        outgoingMessage.addArgument("senderID", Integer.toString(selfID));
+            outgoingMessage.addData(entry.getKey().toString(), entry.getValue().toString());
+        }
+
+        outgoingMessage.addData("senderID", Integer.toString(selfID));
 
         sendMessageToNeighbors(outgoingMessage);
     }

@@ -156,7 +156,7 @@ public class MessagePasser
     {
         try
         {
-            message.addArgument("senderCluster", selfClusterID);
+            message.addData("senderCluster", selfClusterID);
 
             String messageString = message.serializeMessage();
 

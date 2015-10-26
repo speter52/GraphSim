@@ -1,0 +1,67 @@
+    // Colors for console output
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_BOLD = "\u001B[1m";
+
+    /**
+     * List to keep track of the response values received from other nodes.
+     */
+    private List<Double> responsesReceived = new ArrayList<>();
+
+    /**
+     * Calculate and return the average of a list of ints.
+     * @param listOfInts
+     * @return average
+     */
+    private double calculateAverageOfList(List<Double> listOfInts)
+    {
+        double sum = 0;
+
+        for(double item : listOfInts)
+        {
+            sum += item;
+        }
+
+        return sum/listOfInts.size();
+    }
+
+    /**
+     * When a response is received from another node, add it to the response history. Once responses are
+     * received from all the neighbors, average that and mark it as your new value for x.
+     * @param incomingMessage
+     */
+    @Override
+    protected void processResponse(Message incomingMessage)
+    {
+        Double responseValue = Double.parseDouble(incomingMessage.getArgument("x"));
+
+        System.out.println(ANSI_GREEN + "Node " + selfID + " received " + responseValue + " from Node " +
+                incomingMessage.getArgument("senderID") + ANSI_RESET);
+
+        responsesReceived.add(responseValue);
+
+        // Once all the neighboring responses are received, average them and update x
+        if(responsesReceived.size() >= neighbors.size())
+        {
+            double averageOfResponses = calculateAverageOfList(responsesReceived);
+
+            data.put("x", averageOfResponses);
+
+            System.out.println(ANSI_BLUE + ANSI_BOLD + "Node " + selfID + " updated value of X to " +
+                    averageOfResponses + ANSI_RESET);
+
+            responsesReceived.clear();
+
+            sendValuesToNeighbors();
+        }
+    }
+
+    /**
+     * Process the start message that says the node can begin doing work
+     */
+    @Override
+    protected void startNode()
+    {
+        sendValuesToNeighbors();
+    }
