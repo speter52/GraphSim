@@ -8,8 +8,6 @@ public class Main {
     {
         Launcher.launchNetwork(args[0]);
 
-        Thread.sleep(50000);
-
         System.exit(0);
     }
 }

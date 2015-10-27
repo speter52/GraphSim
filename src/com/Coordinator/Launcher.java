@@ -3,6 +3,7 @@ package com.Coordinator;
 import com.MessageHandler.Message;
 import com.MessageHandler.MessagePasser;
 import com.Network.Cluster;
+import com.Network.CustomNode;
 import com.Parser;
 
 import java.net.InetSocketAddress;

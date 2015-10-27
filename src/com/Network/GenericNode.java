@@ -22,6 +22,16 @@ public abstract class GenericNode extends Thread
     protected Map data;
 
     /**
+     * The iteration number that this node is currently on.
+     */
+    protected int iterationNumber = 1;
+
+    /**
+     * Max number of iterations the algorithm should run
+     */
+    private int iterationMax = 1000;
+
+    /**
      * List of this node's neighbors.
      */
     protected ArrayList<Integer> neighbors;
@@ -135,11 +145,13 @@ public abstract class GenericNode extends Thread
      */
     public void run()
     {
-        while(true)
+        while(iterationNumber < iterationMax+1)
         {
             String incomingMessage = messagePasser.waitAndRetrieveMessage(selfID);
 
             processMessage(incomingMessage);
         }
+
+        System.out.println("Node " + selfID + " finished.");
     }
 }

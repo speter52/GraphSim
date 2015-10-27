@@ -4,6 +4,7 @@ import com.MessageHandler.Message;
 import com.MessageHandler.MessagePasser;
 import com.Parser;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -39,6 +40,20 @@ public class Cluster
         {
             node.sendMessage(node.getSelfID(), startMessage);
         }
+
+        for(CustomNode node : nodeList.values())
+        {
+            try
+            {
+                node.join();
+            }
+            catch (InterruptedException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
+
+        System.out.println("Work complete, network exiting.");
     }
 
     /**
