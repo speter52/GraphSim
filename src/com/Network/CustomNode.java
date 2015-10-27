@@ -54,9 +54,7 @@ public class CustomNode extends GenericNode
 
         data.put("y",y);
 
-        data.put("xMinusy",x - y);
-
-        // Step 3: Send x + y to all neighbors
+        // Step 3: Send x to all neighbors
         sendValuesToNeighbors();
     }
 
@@ -64,17 +62,22 @@ public class CustomNode extends GenericNode
     protected void processResponse(Message incomingMessage)
     {
         // Step 4: Receive messages from all neighbors
-        Double xMinusy = Double.parseDouble(incomingMessage.getData("xMinusy"));
+        Double xReceived = Double.parseDouble(incomingMessage.getData("x"));
 
-        responsesReceived.add(xMinusy);
+        responsesReceived.add(xReceived);
 
-        System.out.println("Iteration " + iterationNumber + " - Node " + selfID + " received " + xMinusy +
+        System.out.println("Iteration " + iterationNumber + " - Node " + selfID + " received " + xReceived +
                 " from Node " + incomingMessage.getData("senderID"));
 
         if(responsesReceived.size() >= neighbors.size())
         {
-            // Step 5: After all messages are received from other nodes, set x to average
+            // Step 5a: After all messages are received from other nodes, calculate average
             double newX = calculateAverageOfList(responsesReceived);
+
+            double y = (Double)data.get("y");
+
+            // Step 5b: x <- x - y
+            newX = newX - y;
 
             data.put("x", newX);
 
