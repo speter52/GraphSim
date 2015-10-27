@@ -52,8 +52,8 @@
 
             double y = (Double)data.get("y");
 
-            // Step 5b: x <- x + y
-            newX = newX + y;
+            // Step 5b: x <- x - y
+            newX = newX - y;
 
             data.put("x", newX);
 
