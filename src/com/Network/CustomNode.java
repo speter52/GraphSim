@@ -42,9 +42,32 @@ public class CustomNode extends GenericNode
         return sum/listOfInts.size();
     }
 
+    private void algorithm1Prologue()
+    {
+        double t = (double)data.get("t");
+
+        double x = (double)data.get("x");
+
+        //Step 1: t <- t + 1
+        t = t + 1;
+
+        double step2Subtractor = selfID*2 + 1;
+
+        //Step 2: y <- (1/t)(x - {1,3,5,7,9})
+        double y = (1./t)*(x - step2Subtractor);
+
+        data.put("t",t);
+
+        data.put("y",y);
+
+        // Step 3: Send x to all neighbors
+        sendValuesToNeighbors();
+    }
+
     @Override
     protected void processResponse(Message incomingMessage)
     {
+        // Step 4: Receive messages from all neighbors
         Double xReceived = Double.parseDouble(incomingMessage.getData("x"));
 
         responsesReceived.add(xReceived);
@@ -54,10 +77,12 @@ public class CustomNode extends GenericNode
 
         if(responsesReceived.size() >= neighbors.size())
         {
+            // Step 5a: After all messages are received from other nodes, calculate average
             double newX = calculateAverageOfList(responsesReceived);
 
             double y = (Double)data.get("y");
 
+            // Step 5b: x <- x + y
             newX = newX + y;
 
             data.put("x", newX);
@@ -69,6 +94,7 @@ public class CustomNode extends GenericNode
 
             iterationNumber++;
 
+            // Next iteration
             algorithm1Prologue();
         }
     }
@@ -79,22 +105,4 @@ public class CustomNode extends GenericNode
         algorithm1Prologue();
     }
 
-    private void algorithm1Prologue()
-    {
-        double t = (double)data.get("t");
-
-        double x = (double)data.get("x");
-
-        t = t + 1;
-
-        double step2Subtractor = selfID*2 + 1;
-
-        double y = (1./t)*(x - step2Subtractor);
-
-        data.put("t",t);
-
-        data.put("y",y);
-
-        sendValuesToNeighbors();
-    }
 }

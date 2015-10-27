@@ -1,10 +1,5 @@
     private List<Double> responsesReceived = new ArrayList<>();
 
-    /**
-     * Calculate and return the average of a list of ints.
-     * @param listOfInts
-     * @return average
-     */
     private double calculateAverageOfList(List<Double> listOfInts)
     {
         double sum = 0;
