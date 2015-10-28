@@ -33,7 +33,11 @@ public class Parser
         }
         catch(Exception ex)
         {
+            System.out.println("Couldn't parse input file, exiting.");
+
             ex.printStackTrace();
+
+            System.exit(0);
         }
 
         return networkRepresentation;
