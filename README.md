@@ -52,21 +52,21 @@ Samples node behaviors are in GraphInputs/Algorithms/.
 
 ### Helper Functions
 
-int selfID : The ID of this node.
+`int selfID` : The ID of this node.
 
-int iterationNumber : The iteration counter that must be incremented everytime an iteration is complete. Initialized to 0.
+`int iterationNumber` : The iteration counter that must be incremented everytime an iteration is complete. Initialized to 0.
 
-int iterationMax : The maximum number of iterations that should be executed. For now, it must be set in startNode().
+`int iterationMax` : The maximum number of iterations that should be executed. For now, it must be set in startNode().
 
-List<Integer> neighbors : A list of the ID's of the neighbors to this node. neighbors.size() can used to find the number of neighbors.
+`List<Integer> neighbors` : A list of the ID's of the neighbors to this node. neighbors.size() can used to find the number of neighbors.
 
-Object getState(String key) : Returns the value of a state variable, and null if not present. The value needs to be casted to the appropriate type.
+`Object getState(String key)` : Returns the value of a state variable, and null if not present. The value needs to be casted to the appropriate type.
 
-void setState(String key, Object value) : Updates the value of a state variable, or adds it if not already present.
+`void setState(String key, Object value)` : Updates the value of a state variable, or adds it if not already present.
 
-void sendValueToNeighbors(String key, Object value) : Sends the corresponding key and value to all its neighbors.
+`void sendValueToNeighbors(String key, Object value)` : Sends the corresponding key and value to all its neighbors.
 
-void sendAllValuesToNeighbors() : Sends all the keys and values of this node to all of its neighbors.
+`void sendAllValuesToNeighbors()` : Sends all the keys and values of this node to all of its neighbors.
 
 
 ## Starting The System
