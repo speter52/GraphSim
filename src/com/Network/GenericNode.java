@@ -19,7 +19,7 @@ public abstract class GenericNode extends Thread
     /**
      * Dictionary of data in node.
      */
-    protected Map data;
+    private Map data;
 
     /**
      * The iteration number that this node is currently on.
@@ -29,7 +29,8 @@ public abstract class GenericNode extends Thread
     /**
      * Max number of iterations the algorithm should run
      */
-    private int iterationMax = 1000;
+    // Temporarily overridden in CustomNode class
+    protected int iterationMax = 1000;
 
     /**
      * List of this node's neighbors.
@@ -46,6 +47,26 @@ public abstract class GenericNode extends Thread
 
     protected abstract void processResponse(Message incomingMessage);
 
+
+    /**
+     * Getter for state variables of this node.
+     * @param key
+     * @return
+     */
+    protected Object getState(String key)
+    {
+        return data.get(key);
+    }
+
+    /**
+     * Setter for state variables of this node.
+     * @param key
+     * @param value
+     */
+    protected void setState(String key, Object value)
+    {
+        data.put(key, value);
+    }
     /**
      * Process messages received by node
      * @param messageString
@@ -118,9 +139,27 @@ public abstract class GenericNode extends Thread
     }
 
     /**
+     * Send a specific key and value to all neighbors.
+     * @param key
+     * @param value
+     */
+    public void sendValueToNeighbors(String key, Object value)
+    {
+        Message outgoingMessage = new Message();
+
+        outgoingMessage.addData("Type", "Response");
+
+        outgoingMessage.addData(key, value.toString());
+
+        outgoingMessage.addData("senderID", Integer.toString(selfID));
+
+        sendMessageToNeighbors(outgoingMessage);
+    }
+
+    /**
      * Send this node's values to all its neighbors.
      */
-    public void sendValuesToNeighbors()
+    public void sendAllValuesToNeighbors()
     {
         Message outgoingMessage = new Message();
 

@@ -14,9 +14,9 @@
 
     private void algorithm1Prologue()
     {
-        double t = (double)data.get("t");
+        double t = (double)getState("t");
 
-        double x = (double)data.get("x");
+        double x = (double)getState("x");
 
         //Step 1: t <- t + 1
         t = t + 1;
@@ -26,12 +26,12 @@
         //Step 2: y <- (1/t)(x - {1,3,5,7,9})
         double y = (1./t)*(x - step2Subtractor);
 
-        data.put("t",t);
+        setState("t", t);
 
-        data.put("y",y);
+        setState("y", y);
 
         // Step 3: Send x to all neighbors
-        sendValuesToNeighbors();
+        sendValueToNeighbors("x", x);
     }
 
     @Override
@@ -50,12 +50,12 @@
             // Step 5a: After all messages are received from other nodes, calculate average
             double newX = calculateAverageOfList(responsesReceived);
 
-            double y = (Double)data.get("y");
+            double y = (Double)getState("y");
 
             // Step 5b: x <- x - y
             newX = newX - y;
 
-            data.put("x", newX);
+            setState("x", newX);
 
             System.out.println("Iteration " + iterationNumber + " - Node " + selfID + " updated value of X to " +
                     newX);
@@ -72,6 +72,9 @@
     @Override
     protected void startNode()
     {
+        // Temporarily set iterationMax here
+        iterationMax = 100;
+
         algorithm1Prologue();
     }
 

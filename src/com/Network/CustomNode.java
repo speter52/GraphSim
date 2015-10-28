@@ -24,6 +24,8 @@ public class CustomNode extends GenericNode
      */
     private List<Double> responsesReceived = new ArrayList<>();
 
+
+
     private double calculateAverageOfList(List<Double> listOfInts)
     {
         double sum = 0;
@@ -36,11 +38,11 @@ public class CustomNode extends GenericNode
         return sum/listOfInts.size();
     }
 
-    private void algorithm1Prologue()
+    private void algorithm2Prologue()
     {
-        double t = (double)data.get("t");
+        double t = (double)getState("t");
 
-        double x = (double)data.get("x");
+        double x = (double)getState("x");
 
         //Step 1: t <- t + 1
         t = t + 1;
@@ -50,14 +52,12 @@ public class CustomNode extends GenericNode
         //Step 2: y <- (1/t)(x - {1,3,5,7,9})
         double y = (1./t)*(x - step2Subtractor);
 
-        data.put("t",t);
+        setState("t", t);
 
-        data.put("y",y);
-
-        data.put("xMinusy",x - y);
+        setState("y", y);
 
         // Step 3: Send x + y to all neighbors
-        sendValuesToNeighbors();
+        sendValueToNeighbors("xMinusy", x - y);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class CustomNode extends GenericNode
 
         responsesReceived.add(xMinusy);
 
-        System.out.println("Iteration " + iterationNumber + " - Node " + selfID + " received " + xMinusy+
+        System.out.println("Iteration " + iterationNumber + " - Node " + selfID + " received " + xMinusy +
                 " from Node " + incomingMessage.getData("senderID"));
 
         if(responsesReceived.size() >= neighbors.size())
@@ -76,7 +76,7 @@ public class CustomNode extends GenericNode
             // Step 5: After all messages are received from other nodes, set x to average
             double newX = calculateAverageOfList(responsesReceived);
 
-            data.put("x", newX);
+            setState("x", newX);
 
             System.out.println("Iteration " + iterationNumber + " - Node " + selfID + " updated value of X to " +
                     newX);
@@ -86,13 +86,16 @@ public class CustomNode extends GenericNode
             iterationNumber++;
 
             // Next iteration
-            algorithm1Prologue();
+            algorithm2Prologue();
         }
     }
 
     @Override
     protected void startNode()
     {
-        algorithm1Prologue();
+        // Temporarily set iterationMax here.
+        iterationMax = 100;
+
+        algorithm2Prologue();
     }
 }
