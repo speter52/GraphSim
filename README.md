@@ -2,11 +2,11 @@
 
 I'm designing a framework for my Senior Thesis to abstract away the implementation of a network of nodes for the study of distributed algorithms. The goal is to allow a user to easily define how a node behaves, and then launch a network of nodes to visualize the algorithm running.
 
-# Initializing the System
+## Initializing the System
 
 The system will take as inputs a YAML file representing the network of nodes, and two functions that need to be overridden to tell the system how each node should behave.
 
-# Input YAML Graph
+### Input YAML Graph
 
 The input file will contain the information for each node, which "cluster" they belong to if they will be communicating with nodes on another process, and the corresponding socket information to listen to.
 
@@ -42,7 +42,7 @@ Cluster0:
         t: 0.0
 ```
 
-# Node Behavior
+### Node Behavior
 
 The behavior of each node is defined in the CustomNode class, which inherits from the GenericNode class. CustomNode needs to implement the abstract functions startNode() and processResponse(), and also comes with additional functions that should help make defining the node behavior straightforward.
 
@@ -50,7 +50,7 @@ What the node should do to begin procressing work is defined in startNode(). Tha
 
 Samples node behaviors are in GraphInputs/Algorithms/.
 
-# Helper Functions
+### Helper Functions
 
 int selfID : The ID of this node.
 
@@ -69,7 +69,7 @@ void sendValueToNeighbors(String key, Object value) : Sends the corresponding ke
 void sendAllValuesToNeighbors() : Sends all the keys and values of this node to all of its neighbors.
 
 
-# Starting The System
+## Starting The System
 
 First give the start script execute permissions:
   
