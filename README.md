@@ -16,6 +16,7 @@ The "nodeList" contains a list of nodes whose keys are the integer ID's of the n
 
 Here's a valid input file:
 
+```
 Cluster0:
   isSelfCluster: true
   ip: localhost
@@ -39,6 +40,7 @@ Cluster0:
         x: 6.0
         y: 0.0
         t: 0.0
+```
 
 # Node Behavior
 
