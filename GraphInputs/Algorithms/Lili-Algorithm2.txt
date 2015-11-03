@@ -32,7 +32,7 @@
 
         setState("y", y);
 
-        // Step 3: Send x + y to all neighbors
+        // Step 3: Send x - y to all neighbors
         sendValueToNeighbors("xMinusy", x - y);
     }
 
@@ -70,7 +70,7 @@
     protected void startNode()
     {
         // Temporarily set iterationMax here.
-        iterationMax = 100;
+        iterationMax = 1000;
 
         algorithm2Prologue();
     }

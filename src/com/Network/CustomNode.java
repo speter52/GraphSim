@@ -1,5 +1,6 @@
 package com.Network;
 
+import com.Helpers.Writer;
 import com.MessageHandler.Message;
 import com.MessageHandler.MessagePasser;
 
@@ -12,10 +13,10 @@ import java.util.Map;
  */
 public class CustomNode extends GenericNode
 {
-    public CustomNode(int nodeID, MessagePasser messagePasser, ArrayList neighbors,
+    public CustomNode(int nodeID, MessagePasser messagePasser, Writer writer, ArrayList neighbors,
                       Map data)
     {
-        super(nodeID, messagePasser, neighbors, data);
+        super(nodeID, messagePasser, writer, neighbors, data);
     }
 
     /**
@@ -23,8 +24,6 @@ public class CustomNode extends GenericNode
      * USER NEEDS TO IMPLEMENT ABSTRACT processMessage() METHOD FROM SUPERCLASS
      */
     private List<Double> responsesReceived = new ArrayList<>();
-
-
 
     private double calculateAverageOfList(List<Double> listOfInts)
     {
@@ -56,7 +55,7 @@ public class CustomNode extends GenericNode
 
         setState("y", y);
 
-        // Step 3: Send x + y to all neighbors
+        // Step 3: Send x - y to all neighbors
         sendValueToNeighbors("xMinusy", x - y);
     }
 
@@ -94,7 +93,7 @@ public class CustomNode extends GenericNode
     protected void startNode()
     {
         // Temporarily set iterationMax here.
-        iterationMax = 100;
+        iterationMax = 1000;
 
         algorithm2Prologue();
     }

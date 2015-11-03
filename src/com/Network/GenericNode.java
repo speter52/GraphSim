@@ -1,5 +1,8 @@
 package com.Network;
 
+import com.Helpers.Enums.WriteType;
+import com.Helpers.WriteJob;
+import com.Helpers.Writer;
 import com.MessageHandler.Message;
 import com.MessageHandler.MessagePasser;
 
@@ -43,6 +46,11 @@ public abstract class GenericNode extends Thread
      */
     private MessagePasser messagePasser;
 
+    /**
+     * Thread that handles displaying output so node can continue processing work.
+     */
+    private Writer writer;
+
     protected abstract void startNode();
 
     protected abstract void processResponse(Message incomingMessage);
@@ -66,7 +74,14 @@ public abstract class GenericNode extends Thread
     protected void setState(String key, Object value)
     {
         data.put(key, value);
+
+        ///////////////////TODO: TEMPORARY HACKY CODE, NEED TO GRAPH LILI'S DATA
+        if(key == "x" && selfID == 0)
+        {
+            writer.addJob(new WriteJob(WriteType.FILE, value.toString()));
+        }
     }
+
     /**
      * Process messages received by node
      * @param messageString
@@ -102,12 +117,14 @@ public abstract class GenericNode extends Thread
      * Primary Constructor.
      * @param messagePasser Array of message queues used for node communication
      */
-    public GenericNode(int nodeID, MessagePasser messagePasser, ArrayList neighbors,
+    public GenericNode(int nodeID, MessagePasser messagePasser, Writer writer, ArrayList neighbors,
                        Map data)
     {
         this.selfID = nodeID;
 
         this.messagePasser = messagePasser;
+
+        this.writer = writer;
 
         this.neighbors = neighbors;
 

@@ -148,6 +148,7 @@ public class MessagePasser
     }
 
     /**
+     * TODO: Store newly created clusters, don't keep opening and closing
      * Send a message to another cluster on the network.
      * @param clusterID ID of receiving cluster
      * @param message

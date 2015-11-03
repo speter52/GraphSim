@@ -1,5 +1,6 @@
 package com.Coordinator;
 
+import com.Helpers.Writer;
 import com.MessageHandler.Message;
 import com.MessageHandler.MessagePasser;
 import com.Network.Cluster;
@@ -49,7 +50,12 @@ public class Launcher
 
             readyListener.start();
 
-            Cluster selfCluster = new Cluster(networkRepresentation, messagePasser);
+            // Creating output writer
+            Writer writer = new Writer();
+
+            writer.start();
+
+            Cluster selfCluster = new Cluster(networkRepresentation, messagePasser, writer);
 
             // Let other clusters in network know this cluster is ready
             notifyNetworkReady(messagePasser);

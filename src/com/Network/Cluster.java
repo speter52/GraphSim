@@ -1,5 +1,7 @@
 package com.Network;
 
+import com.Helpers.WriteJob;
+import com.Helpers.Writer;
 import com.MessageHandler.Message;
 import com.MessageHandler.MessagePasser;
 import com.Parser;
@@ -26,6 +28,11 @@ public class Cluster
      * MessagePasser for all the nodes in this cluster.
      */
     public MessagePasser messagePasser;
+
+    /**
+     * Thread that displays output. Done in separate thread so actual work doesn't have to wait on it.
+     */
+    private final Writer writer;
 
     /**
      * Send a start message to all the nodes in this cluster.
@@ -72,7 +79,7 @@ public class Cluster
 
             Map nodeDetails = (Map) nodeEntry.getValue();
 
-            CustomNode newNode = Parser.parseNodeEntry(nodeID, nodeDetails, messagePasser);
+            CustomNode newNode = Parser.parseNodeEntry(nodeID, nodeDetails, messagePasser, writer);
 
             newNode.start();
 
@@ -85,11 +92,13 @@ public class Cluster
      * @param networkRepresentation
      * @return List of Nodes created.
      */
-    public Cluster(Map networkRepresentation, MessagePasser messagePasser)
+    public Cluster(Map networkRepresentation, MessagePasser messagePasser, Writer writer)
     {
         Map<Integer,Object> nodesRepresentation = Parser.getNodesInSelfCluster(networkRepresentation);
 
         this.messagePasser = messagePasser;
+
+        this.writer = writer;
 
         buildNodes(nodesRepresentation);
     }
