@@ -51,10 +51,18 @@ public abstract class GenericNode extends Thread
      */
     private Writer writer;
 
+    /**
+     * This function determines what the node will do when it first begins to start processing work. It
+     * must be overridden by the user in the CustomNode class.
+     */
     protected abstract void startNode();
 
+    /**
+     * This function determines what the node will do when it receives a message from another node. It must
+     * be overridden by the user in the CustomNode class.
+     * @param incomingMessage
+     */
     protected abstract void processResponse(Message incomingMessage);
-
 
     /**
      * Getter for state variables of this node.
