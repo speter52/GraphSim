@@ -60,7 +60,7 @@ public class Cluster
             }
         }
 
-        System.out.println("Work complete, network exiting.");
+        writer.printToConsole("Work complete, network exiting.");
     }
 
     /**

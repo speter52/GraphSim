@@ -5,5 +5,5 @@ package com.Helpers.Enums;
  */
 public enum WriteType
 {
-    FILE, CONSOLE
+    FILE, CONSOLE, DATABASE, MEMORY
 }

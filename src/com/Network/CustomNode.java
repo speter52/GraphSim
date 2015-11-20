@@ -67,7 +67,7 @@ public class CustomNode extends GenericNode
 
         responsesReceived.add(xMinusy);
 
-        System.out.println("Iteration " + iterationNumber + " - Node " + selfID + " received " + xMinusy +
+        printToConsole("Iteration " + iterationNumber + " - Node " + selfID + " received " + xMinusy +
                 " from Node " + incomingMessage.getData("senderID"));
 
         if(responsesReceived.size() >= neighbors.size())
@@ -77,7 +77,7 @@ public class CustomNode extends GenericNode
 
             setState("x", newX);
 
-            System.out.println("Iteration " + iterationNumber + " - Node " + selfID + " updated value of X to " +
+            printToConsole("Iteration " + iterationNumber + " - Node " + selfID + " updated value of X to " +
                     newX);
 
             responsesReceived.clear();
@@ -93,7 +93,7 @@ public class CustomNode extends GenericNode
     protected void startNode()
     {
         // Temporarily set iterationMax here.
-        iterationMax = 1000;
+        iterationMax = 100;
 
         algorithm2Prologue();
     }

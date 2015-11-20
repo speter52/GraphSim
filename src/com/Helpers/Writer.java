@@ -3,6 +3,12 @@ package com.Helpers;
 import com.Helpers.Enums.WriteType;
 
 import java.io.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -16,11 +22,18 @@ public class Writer extends Thread
     private LinkedBlockingQueue<WriteJob> outputQueue;
 
     /**
+     * State values to be outputted to DB after simulation is complete.
+     * TODO: Expand structure to support values from different state values and different nodes.
+     */
+    private Map<Integer, Double> valuesForDB;
+    /**
      * Primary constructor.
      */
     public Writer()
     {
         this.outputQueue = new LinkedBlockingQueue<>();
+
+        this.valuesForDB = new HashMap<>();
     }
 
     /**
@@ -42,6 +55,14 @@ public class Writer extends Thread
         {
             case FILE:
                 writeToFile(job);
+                break;
+
+            case DATABASE:
+                valuesForDB.put(job.iterationNumber, job.stateValue);
+                break;
+
+            case CONSOLE:
+                System.out.println(job.output);
         }
     }
 
@@ -61,6 +82,54 @@ public class Writer extends Thread
         {
             ex.printStackTrace();
         }
+    }
+
+    /**
+     * Write all values in memory to DB.
+     * TODO: Need to expand to support multiple state variables and different nodes.
+     */
+    public void pushValuesToDB()
+    {
+        try
+        {
+            String url = "jdbc:mysql://localhost:3306/StateValues";
+            String user = "java";
+            String password = "password";
+
+            Connection dbConnection = DriverManager.getConnection(url, user, password);
+
+            Statement createStatement = dbConnection.createStatement();
+
+            createStatement.execute("CREATE TABLE StateValues(IterationNumber int, Val float(8,4));");
+
+            Statement insertStatements = dbConnection.createStatement();
+
+            for(Map.Entry entry: valuesForDB.entrySet())
+            {
+                insertStatements.addBatch("INSERT INTO StateValues (IterationNumber, Val) VALUES (" + entry.getKey() +
+                        ", " + entry.getValue() + ")");
+            }
+
+            insertStatements.executeBatch();
+
+            dbConnection.close();
+        }
+        catch(SQLException ex)
+        {
+            printToConsole("Error in writing files to database.");
+
+            ex.printStackTrace();
+        }
+
+    }
+
+    /**
+     * Adds a job to the queue that will print a message to the console.
+     * @param output
+     */
+    public void printToConsole(String output)
+    {
+        addJob(new WriteJob(WriteType.CONSOLE, output));
     }
 
     public void run()

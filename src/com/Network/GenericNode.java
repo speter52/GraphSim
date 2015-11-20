@@ -79,6 +79,8 @@ public abstract class GenericNode extends Thread
         if(key == "x" && selfID == 0)
         {
             writer.addJob(new WriteJob(WriteType.FILE, value.toString()));
+
+            writer.addJob(new WriteJob(WriteType.DATABASE, iterationNumber, Double.parseDouble(value.toString())));
         }
     }
 
@@ -197,6 +199,16 @@ public abstract class GenericNode extends Thread
     }
 
     /**
+     * Helper function for node that will print console output using the writer thread, allowing the primary
+     * threads to continue processing work without interruption.
+     * @param output
+     */
+    protected void printToConsole(String output)
+    {
+        writer.printToConsole(output);
+    }
+
+    /**
      * Run method that processes messages from the message queue of this node.
      */
     public void run()
@@ -208,6 +220,6 @@ public abstract class GenericNode extends Thread
             processMessage(incomingMessage);
         }
 
-        System.out.println("Node " + selfID + " finished.");
+        printToConsole("Node " + selfID + " finished.");
     }
 }

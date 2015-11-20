@@ -4,7 +4,6 @@ import com.Helpers.Writer;
 import com.MessageHandler.Message;
 import com.MessageHandler.MessagePasser;
 import com.Network.Cluster;
-import com.Network.CustomNode;
 import com.Parser;
 
 import java.net.InetSocketAddress;
@@ -50,7 +49,8 @@ public class Launcher
 
             readyListener.start();
 
-            // Creating output writer
+            // Creating writer thread to handle secondary tasks like console output, so primary threads can keep
+            // processing work
             Writer writer = new Writer();
 
             writer.start();
@@ -70,6 +70,8 @@ public class Launcher
 
             // Let cluster start processing work
             selfCluster.startWork();
+
+            writer.pushValuesToDB();
         }
         catch(Exception ex)
         {
