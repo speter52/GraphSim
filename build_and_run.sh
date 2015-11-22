@@ -19,6 +19,6 @@ ant compile.module.seniorthesis.production
 # TODO: Find a way to output the build results while also searching the output for "BUILD SUCCESSFUL". Right now
 # TODO: running ANT once to build and another time to parse the output.
 if  ant compile.module.seniorthesis.production | grep -q "BUILD SUCCESSFUL"; then
-    java -cp Modules/snakeyaml-1.16.jar:out/production/SeniorThesis/ com.Main $1
+    java -cp Modules/*:out/production/SeniorThesis/ com.Main $1
 fi
 
