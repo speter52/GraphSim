@@ -1,7 +1,7 @@
 package com;
 
 import com.Helpers.SocketInfo;
-import com.Helpers.Writer;
+import com.Helpers.OutputWriter.WriterThread;
 import com.MessageHandler.MessagePasser;
 import com.Network.CustomNode;
 import org.yaml.snakeyaml.Yaml;
@@ -131,7 +131,7 @@ public class Parser
      * @param messagePasser
      * @return CustomNode that was built
      */
-    public static CustomNode parseNodeEntry(int nodeId, Map nodeDetails, MessagePasser messagePasser, Writer writer)
+    public static CustomNode parseNodeEntry(int nodeId, Map nodeDetails, MessagePasser messagePasser, WriterThread writer)
     {
         ArrayList neighbors = (ArrayList)nodeDetails.get("neighbors");
 

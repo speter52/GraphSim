@@ -1,6 +1,6 @@
 package com.Network;
 
-import com.Helpers.Writer;
+import com.Helpers.OutputWriter.WriterThread;
 import com.MessageHandler.Message;
 import com.MessageHandler.MessagePasser;
 
@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class CustomNode extends GenericNode
 {
-    public CustomNode(int nodeID, MessagePasser messagePasser, Writer writer, ArrayList neighbors,
+    public CustomNode(int nodeID, MessagePasser messagePasser, WriterThread writer, ArrayList neighbors,
                       Map data)
     {
         super(nodeID, messagePasser, writer, neighbors, data);

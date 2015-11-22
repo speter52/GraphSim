@@ -1,6 +1,6 @@
 package com.Coordinator;
 
-import com.Helpers.Writer;
+import com.Helpers.OutputWriter.WriterThread;
 import com.MessageHandler.Message;
 import com.MessageHandler.MessagePasser;
 import com.Network.Cluster;
@@ -51,7 +51,7 @@ public class Launcher
 
             // Creating writer thread to handle secondary tasks like console output, so primary threads can keep
             // processing work
-            Writer writer = new Writer();
+            WriterThread writer = new WriterThread();
 
             writer.start();
 

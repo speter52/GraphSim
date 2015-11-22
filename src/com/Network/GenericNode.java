@@ -1,8 +1,8 @@
 package com.Network;
 
-import com.Helpers.Enums.WriteType;
-import com.Helpers.WriteJob;
-import com.Helpers.Writer;
+import com.Helpers.OutputWriter.WriteType;
+import com.Helpers.OutputWriter.WriteJob;
+import com.Helpers.OutputWriter.WriterThread;
 import com.MessageHandler.Message;
 import com.MessageHandler.MessagePasser;
 
@@ -49,7 +49,7 @@ public abstract class GenericNode extends Thread
     /**
      * Thread that handles displaying output so node can continue processing work.
      */
-    private Writer writer;
+    private WriterThread writer;
 
     /**
      * This function determines what the node will do when it first begins to start processing work. It
@@ -127,7 +127,7 @@ public abstract class GenericNode extends Thread
      * Primary Constructor.
      * @param messagePasser Array of message queues used for node communication
      */
-    public GenericNode(int nodeID, MessagePasser messagePasser, Writer writer, ArrayList neighbors,
+    public GenericNode(int nodeID, MessagePasser messagePasser, WriterThread writer, ArrayList neighbors,
                        Map data)
     {
         this.selfID = nodeID;

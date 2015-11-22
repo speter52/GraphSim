@@ -1,9 +1,9 @@
-package com.Helpers.Enums;
+package com.Helpers.OutputWriter;
 
 /**
  * Determines type of write job.
  */
 public enum WriteType
 {
-    FILE, CONSOLE, DATABASE, MEMORY
+    FILE, CONSOLE, DATABASE
 }

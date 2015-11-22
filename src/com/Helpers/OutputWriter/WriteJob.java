@@ -1,8 +1,6 @@
-package com.Helpers;
+package com.Helpers.OutputWriter;
 
-import com.Helpers.Enums.WriteType;
-
-import java.util.Map;
+import com.Helpers.OutputWriter.WriteType;
 
 /**
  * Class that holds the information for output from the system and where it should go.

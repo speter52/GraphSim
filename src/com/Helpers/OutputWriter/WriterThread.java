@@ -1,6 +1,4 @@
-package com.Helpers;
-
-import com.Helpers.Enums.WriteType;
+package com.Helpers.OutputWriter;
 
 import java.io.*;
 import java.sql.Connection;
@@ -14,10 +12,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * A thread that will write output to a file so that the primary threads can continue sending messages.
  */
-public class Writer extends Thread
+public class WriterThread extends Thread
 {
     /**
-     * Queue to hold all the jobs for the Writer.
+     * Queue to hold all the jobs for the WriterThread.
      */
     private LinkedBlockingQueue<WriteJob> outputQueue;
 
@@ -29,7 +27,7 @@ public class Writer extends Thread
     /**
      * Primary constructor.
      */
-    public Writer()
+    public WriterThread()
     {
         this.outputQueue = new LinkedBlockingQueue<>();
 
@@ -92,11 +90,15 @@ public class Writer extends Thread
     {
         try
         {
-            String url = "jdbc:mysql://localhost:3306/StateValues";
+            String url = "jdbc:mysql://localhost:3306/StateValues?allowMultipleQueries=true";
             String user = "java";
             String password = "password";
 
             Connection dbConnection = DriverManager.getConnection(url, user, password);
+
+            Statement dropStatement = dbConnection.createStatement();
+
+            dropStatement.execute("DROP TABLE IF EXISTS StateValues; ");
 
             Statement createStatement = dbConnection.createStatement();
 

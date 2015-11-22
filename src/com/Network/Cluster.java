@@ -1,12 +1,10 @@
 package com.Network;
 
-import com.Helpers.WriteJob;
-import com.Helpers.Writer;
+import com.Helpers.OutputWriter.WriterThread;
 import com.MessageHandler.Message;
 import com.MessageHandler.MessagePasser;
 import com.Parser;
 
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -32,7 +30,7 @@ public class Cluster
     /**
      * Thread that displays output. Done in separate thread so actual work doesn't have to wait on it.
      */
-    private final Writer writer;
+    private final WriterThread writer;
 
     /**
      * Send a start message to all the nodes in this cluster.
@@ -92,7 +90,7 @@ public class Cluster
      * @param networkRepresentation
      * @return List of Nodes created.
      */
-    public Cluster(Map networkRepresentation, MessagePasser messagePasser, Writer writer)
+    public Cluster(Map networkRepresentation, MessagePasser messagePasser, WriterThread writer)
     {
         Map<Integer,Object> nodesRepresentation = Parser.getNodesInSelfCluster(networkRepresentation);
 
