@@ -11,7 +11,6 @@
   <!-- Compiler options -->
   
   <property name="compiler.debug" value="on"/>
-  <property name="compiler.verbose" value="on"/>
   <property name="compiler.generate.no.warnings" value="off"/>
   <property name="compiler.args" value=""/>
   <property name="compiler.max.memory" value="700m"/>
@@ -113,6 +112,8 @@
     <pathelement location="${basedir}/Modules/yamlbeans-1.09.jar"/>
     
     <pathelement location="${basedir}/Modules/snakeyaml-1.16.jar"/>
+    <pathelement location="${basedir}/Modules/mongodb-driver-3.0.4.jar"/>
+    <pathelement location="${basedir}/Modules/mysql-connector-java-5.1.37-bin.jar"/>
   </path>
   
   <path id="seniorthesis.runtime.production.module.classpath">
@@ -121,6 +122,8 @@
     <pathelement location="${basedir}/Modules/yamlbeans-1.09.jar"/>
     
     <pathelement location="${basedir}/Modules/snakeyaml-1.16.jar"/>
+    <pathelement location="${basedir}/Modules/mongodb-driver-3.0.4.jar"/>
+    <pathelement location="${basedir}/Modules/mysql-connector-java-5.1.37-bin.jar"/>
   </path>
   
   <path id="seniorthesis.module.classpath">
@@ -130,6 +133,8 @@
     <pathelement location="${basedir}/Modules/yamlbeans-1.09.jar"/>
     
     <pathelement location="${basedir}/Modules/snakeyaml-1.16.jar"/>
+    <pathelement location="${basedir}/Modules/mongodb-driver-3.0.4.jar"/>
+    <pathelement location="${basedir}/Modules/mysql-connector-java-5.1.37-bin.jar"/>
   </path>
   
   <path id="seniorthesis.runtime.module.classpath">
@@ -139,6 +144,8 @@
     <pathelement location="${basedir}/Modules/yamlbeans-1.09.jar"/>
     
     <pathelement location="${basedir}/Modules/snakeyaml-1.16.jar"/>
+    <pathelement location="${basedir}/Modules/mongodb-driver-3.0.4.jar"/>
+    <pathelement location="${basedir}/Modules/mysql-connector-java-5.1.37-bin.jar"/>
   </path>
   
   
@@ -161,7 +168,7 @@
   
   <target name="compile.module.seniorthesis.production" description="Compile module SeniorThesis; production classes">
     <mkdir dir="${seniorthesis.output.dir}"/>
-    <javac destdir="${seniorthesis.output.dir}" debug="${compiler.debug}" verbose="${compiler.verbose}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.seniorthesis}/javac">
+    <javac destdir="${seniorthesis.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.seniorthesis}/javac">
       <compilerarg line="${compiler.args.seniorthesis}"/>
       <bootclasspath refid="seniorthesis.module.bootclasspath"/>
       <classpath refid="seniorthesis.module.production.classpath"/>
