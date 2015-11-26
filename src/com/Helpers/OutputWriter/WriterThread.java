@@ -94,6 +94,8 @@ public class WriterThread extends Thread
             String user = "java";
             String password = "password";
 
+            printToConsole("Saving results to database.");
+
             Connection dbConnection = DriverManager.getConnection(url, user, password);
 
             Statement dropStatement = dbConnection.createStatement();
