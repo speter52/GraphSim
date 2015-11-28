@@ -7,7 +7,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -30,7 +32,7 @@ public class WriterThread extends Thread
      * State values to be outputted to DB after simulation is complete.
      * TODO: Expand structure to support values from different state values and different nodes.
      */
-    private Map<Integer, Double> valuesForDB;
+    private List<WriteJob> valuesForDB;
     /**
      * Primary constructor.
      */
@@ -38,7 +40,7 @@ public class WriterThread extends Thread
     {
         this.outputQueue = new LinkedBlockingQueue<>();
 
-        this.valuesForDB = new HashMap<>();
+        this.valuesForDB = new ArrayList<>();
 
         this.configValues = new ConfigReader();
     }
@@ -65,7 +67,7 @@ public class WriterThread extends Thread
                 break;
 
             case DATABASE:
-                valuesForDB.put(job.iterationNumber, job.stateValue);
+                valuesForDB.add(job);
                 break;
 
             case CONSOLE:
@@ -114,14 +116,18 @@ public class WriterThread extends Thread
 
             Statement createStatement = dbConnection.createStatement();
 
-            createStatement.execute(String.format("CREATE TABLE %s(IterationNumber int, Val float(8,4));", table));
+            String temp = String.format("CREATE TABLE %s(IterationNumber int, Node int, " +
+                    "StateVariable varchar(255), Value float(16,8));", table);
+            createStatement.execute(temp);
 
             Statement insertStatements = dbConnection.createStatement();
 
-            for(Map.Entry entry: valuesForDB.entrySet())
+            for(WriteJob job: valuesForDB)
             {
-                insertStatements.addBatch(String.format("INSERT INTO %s (IterationNumber, Val) VALUES (" + entry.getKey() +
-                        ", " + entry.getValue() + ")", table));
+                String statement = String.format("INSERT INTO %s (IterationNumber, Node, StateVariable, Value) " +
+                        "VALUES (" + job.iterationNumber + ", " + job.nodeId + ", \"" + job.stateVariable + "\", " + job.stateValue + ")", table);
+                // TODO: Reformat string to use placeholders
+                insertStatements.addBatch(statement);
             }
 
             insertStatements.executeBatch();

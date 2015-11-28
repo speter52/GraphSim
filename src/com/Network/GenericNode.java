@@ -83,13 +83,7 @@ public abstract class GenericNode extends Thread
     {
         data.put(key, value);
 
-        ///////////////////TODO: TEMPORARY HACKY CODE, NEED TO GRAPH LILI'S DATA
-        if(key == "x" && selfID == 0)
-        {
-            //writer.addJob(new WriteJob(WriteType.FILE, value.toString()));
-
-            writer.addJob(new WriteJob(WriteType.DATABASE, iterationNumber, Double.parseDouble(value.toString())));
-        }
+        writer.addJob(new WriteJob(WriteType.DATABASE, iterationNumber, selfID, key, Double.parseDouble(value.toString())));
     }
 
     /**

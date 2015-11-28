@@ -17,6 +17,10 @@ public class WriteJob
      */
     public int iterationNumber;
 
+    public int nodeId;
+
+    public String stateVariable;
+
     public double stateValue;
 
     public WriteJob(WriteType type, String output)
@@ -27,11 +31,15 @@ public class WriteJob
     }
 
     // TODO: Temporary constructor to speed up development of webapp
-    public WriteJob(WriteType type, int iterationNumber, double stateValue)
+    public WriteJob(WriteType type, int iterationNumber, int nodeID, String stateVariable, double stateValue)
     {
         this.type = type;
 
         this.iterationNumber = iterationNumber;
+
+        this.nodeId = nodeID;
+
+        this.stateVariable = stateVariable;
 
         this.stateValue = stateValue;
     }
