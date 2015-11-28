@@ -8,6 +8,7 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,7 @@ public class Parser
 
             networkRepresentation = (Map)yaml.load(new FileInputStream(new File(inputFile)));
         }
-        catch(Exception ex)
+        catch(FileNotFoundException ex)
         {
             System.out.println("Couldn't parse input file, exiting.");
 

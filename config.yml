@@ -1,0 +1,5 @@
+# Configuration file for GraphSim project
+mysql_database : jdbc:mysql://localhost:3306/StateValues
+database_user : java
+database_password : password
+database_table : AlgorithmResults

@@ -1,5 +1,7 @@
 package com.Helpers.OutputWriter;
 
+import com.Helpers.ConfigReader;
+
 import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,6 +16,11 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class WriterThread extends Thread
 {
+    /**
+     * Holds all the configuration values for the application.
+     */
+
+    private ConfigReader configValues;
     /**
      * Queue to hold all the jobs for the WriterThread.
      */
@@ -32,6 +39,8 @@ public class WriterThread extends Thread
         this.outputQueue = new LinkedBlockingQueue<>();
 
         this.valuesForDB = new HashMap<>();
+
+        this.configValues = new ConfigReader();
     }
 
     /**
@@ -90,9 +99,10 @@ public class WriterThread extends Thread
     {
         try
         {
-            String url = "jdbc:mysql://localhost:3306/StateValues?allowMultipleQueries=true";
-            String user = "java";
-            String password = "password";
+            String url = configValues.getDatabaseInstance() + "?allowMultipleQueries=true";
+            String user = configValues.getDatabaseUser();
+            String password = configValues.getDatabasePassword();
+            String table = configValues.getDatabaseTable();
 
             printToConsole("Saving results to database.");
 
@@ -100,18 +110,18 @@ public class WriterThread extends Thread
 
             Statement dropStatement = dbConnection.createStatement();
 
-            dropStatement.execute("DROP TABLE IF EXISTS StateValues; ");
+            dropStatement.execute(String.format("DROP TABLE IF EXISTS %s;", table));
 
             Statement createStatement = dbConnection.createStatement();
 
-            createStatement.execute("CREATE TABLE StateValues(IterationNumber int, Val float(8,4));");
+            createStatement.execute(String.format("CREATE TABLE %s(IterationNumber int, Val float(8,4));", table));
 
             Statement insertStatements = dbConnection.createStatement();
 
             for(Map.Entry entry: valuesForDB.entrySet())
             {
-                insertStatements.addBatch("INSERT INTO StateValues (IterationNumber, Val) VALUES (" + entry.getKey() +
-                        ", " + entry.getValue() + ")");
+                insertStatements.addBatch(String.format("INSERT INTO %s (IterationNumber, Val) VALUES (" + entry.getKey() +
+                        ", " + entry.getValue() + ")", table));
             }
 
             insertStatements.executeBatch();
@@ -124,7 +134,6 @@ public class WriterThread extends Thread
 
             ex.printStackTrace();
         }
-
     }
 
     /**
