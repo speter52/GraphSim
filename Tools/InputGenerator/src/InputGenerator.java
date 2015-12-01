@@ -22,6 +22,11 @@ public class InputGenerator
     private int numberOfNeighbors;
 
     /**
+     * Number of partitions this cluster is divided into.
+     */
+    private int numberOfPartitions;
+
+    /**
      * Number of groups of nodes that are connected to each other.
      */
     // TODO: Need to support generating multiple clusters
@@ -36,15 +41,17 @@ public class InputGenerator
      * Primary constructor.
      * @param numberOfNodes
      * @param numberOfNeighbors
-     * @param numberOfClusters
      */
-    public InputGenerator(int numberOfNodes, int numberOfNeighbors, int numberOfClusters, String[] stateVariables)
+    public InputGenerator(int numberOfNodes, int numberOfNeighbors, int numberOfPartitions, String[] stateVariables)
     {
         this.numberOfNodes = numberOfNodes;
 
         this.numberOfNeighbors = numberOfNeighbors;
 
-        this.numberOfClusters = numberOfClusters;
+        this.numberOfPartitions = numberOfPartitions;
+
+        // TODO: Default to 1 for now
+        this.numberOfClusters = 1;
 
         this.stateVariables = stateVariables;
     }
@@ -58,9 +65,39 @@ public class InputGenerator
     {
         List neighbors = new ArrayList();
 
+        int numberOfNodesInPartition = numberOfNodes/numberOfPartitions;
+
+        if(neighbors.size() >= numberOfNodesInPartition)
+        {
+            System.out.println("The number of neighbors has to be less than the number of nodes in a partition.");
+
+            System.exit(1);
+        }
+
+        int partitionOfNode= nodeID/numberOfNodesInPartition;
+
+        int partitionOffset = partitionOfNode*numberOfNodesInPartition;
+
+        if(nodeID % numberOfNodesInPartition == 0)
+        {
+            int neighborToAdd = (nodeID-1) % numberOfNodes;
+
+            if(neighborToAdd < 0) neighbors.add(neighborToAdd + numberOfNodes);
+
+            else neighbors.add(neighborToAdd);
+        }
+        else if(nodeID % numberOfNodesInPartition == numberOfNodesInPartition-1)
+        {
+            neighbors.add((nodeID + 1) % numberOfNodes);
+        }
+
         for(int i=0; i < numberOfNeighbors; i++)
         {
-            neighbors.add((nodeID+1+i) % (numberOfNodes));
+            int neighborIndexInPartition = ((nodeID+1+i) % (numberOfNodesInPartition));
+
+            int currentNeighborID = neighborIndexInPartition + partitionOffset;
+
+            if(currentNeighborID < numberOfNodes) neighbors.add(currentNeighborID);
         }
 
         return neighbors;

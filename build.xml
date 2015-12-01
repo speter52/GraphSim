@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="seniorthesis" default="all">
+<project name="graphsim" default="all">
   
   
   <property file="build.properties"/>
@@ -85,119 +85,203 @@
   <property name="project.jdk.bin" value="${jdk.bin.1.7}"/>
   <property name="project.jdk.classpath" value="jdk.classpath.1.7"/>
   
+  
+  <!-- Project Libraries -->
+  
+  <path id="library.modules.classpath">
+    <pathelement location="${basedir}/Modules/mysql-connector-java-5.1.37-bin.jar"/>
+    <pathelement location="${basedir}/Modules/snakeyaml-1.16.jar"/>
+  </path>
+  <!-- Register Custom Compiler Taskdefs -->
+  <property name="javac2.home" value="${idea.home}/lib"/>
+  <path id="javac2.classpath">
+    <pathelement location="${javac2.home}/javac2.jar"/>
+    <pathelement location="${javac2.home}/jdom.jar"/>
+    <pathelement location="${javac2.home}/asm-all.jar"/>
+    <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
+  </path>
+  <target name="register.custom.compilers">
+    <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
+    <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
+  </target>
+  
   <!-- Modules -->
   
   
-  <!-- Module SeniorThesis -->
+  <!-- Module GraphSim -->
   
-  <dirname property="module.seniorthesis.basedir" file="${ant.file}"/>
+  <dirname property="module.graphsim.basedir" file="${ant.file}"/>
   
   
-  <property name="module.jdk.home.seniorthesis" value="${project.jdk.home}"/>
-  <property name="module.jdk.bin.seniorthesis" value="${project.jdk.bin}"/>
-  <property name="module.jdk.classpath.seniorthesis" value="${project.jdk.classpath}"/>
+  <property name="module.jdk.home.graphsim" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.graphsim" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.graphsim" value="${project.jdk.classpath}"/>
   
-  <property name="compiler.args.seniorthesis" value="-encoding UTF-8 -source 1.7 ${compiler.args}"/>
+  <property name="compiler.args.graphsim" value="-encoding UTF-8 -source 1.7 ${compiler.args}"/>
   
-  <property name="seniorthesis.output.dir" value="${module.seniorthesis.basedir}/out/production/SeniorThesis"/>
-  <property name="seniorthesis.testoutput.dir" value="${module.seniorthesis.basedir}/out/test/SeniorThesis"/>
+  <property name="graphsim.output.dir" value="${module.graphsim.basedir}/out/production/GraphSim"/>
+  <property name="graphsim.testoutput.dir" value="${module.graphsim.basedir}/out/test/GraphSim"/>
   
-  <path id="seniorthesis.module.bootclasspath">
+  <path id="graphsim.module.bootclasspath">
     <!-- Paths to be included in compilation bootclasspath -->
   </path>
   
-  <path id="seniorthesis.module.production.classpath">
-    <path refid="${module.jdk.classpath.seniorthesis}"/>
-    <pathelement location="${basedir}/Modules/java-json.jar"/>
-    <pathelement location="${basedir}/Modules/yamlbeans-1.09.jar"/>
-    
-    <pathelement location="${basedir}/Modules/snakeyaml-1.16.jar"/>
-    <pathelement location="${basedir}/Modules/mongodb-driver-3.0.4.jar"/>
-    <pathelement location="${basedir}/Modules/mysql-connector-java-5.1.37-bin.jar"/>
+  <path id="graphsim.module.production.classpath">
+    <path refid="${module.jdk.classpath.graphsim}"/>
+    <path refid="library.modules.classpath"/>
   </path>
   
-  <path id="seniorthesis.runtime.production.module.classpath">
-    <pathelement location="${seniorthesis.output.dir}"/>
-    <pathelement location="${basedir}/Modules/java-json.jar"/>
-    <pathelement location="${basedir}/Modules/yamlbeans-1.09.jar"/>
-    
-    <pathelement location="${basedir}/Modules/snakeyaml-1.16.jar"/>
-    <pathelement location="${basedir}/Modules/mongodb-driver-3.0.4.jar"/>
-    <pathelement location="${basedir}/Modules/mysql-connector-java-5.1.37-bin.jar"/>
+  <path id="graphsim.runtime.production.module.classpath">
+    <pathelement location="${graphsim.output.dir}"/>
+    <path refid="library.modules.classpath"/>
   </path>
   
-  <path id="seniorthesis.module.classpath">
-    <path refid="${module.jdk.classpath.seniorthesis}"/>
-    <pathelement location="${seniorthesis.output.dir}"/>
-    <pathelement location="${basedir}/Modules/java-json.jar"/>
-    <pathelement location="${basedir}/Modules/yamlbeans-1.09.jar"/>
-    
-    <pathelement location="${basedir}/Modules/snakeyaml-1.16.jar"/>
-    <pathelement location="${basedir}/Modules/mongodb-driver-3.0.4.jar"/>
-    <pathelement location="${basedir}/Modules/mysql-connector-java-5.1.37-bin.jar"/>
+  <path id="graphsim.module.classpath">
+    <path refid="${module.jdk.classpath.graphsim}"/>
+    <pathelement location="${graphsim.output.dir}"/>
+    <path refid="library.modules.classpath"/>
   </path>
   
-  <path id="seniorthesis.runtime.module.classpath">
-    <pathelement location="${seniorthesis.testoutput.dir}"/>
-    <pathelement location="${seniorthesis.output.dir}"/>
-    <pathelement location="${basedir}/Modules/java-json.jar"/>
-    <pathelement location="${basedir}/Modules/yamlbeans-1.09.jar"/>
-    
-    <pathelement location="${basedir}/Modules/snakeyaml-1.16.jar"/>
-    <pathelement location="${basedir}/Modules/mongodb-driver-3.0.4.jar"/>
-    <pathelement location="${basedir}/Modules/mysql-connector-java-5.1.37-bin.jar"/>
+  <path id="graphsim.runtime.module.classpath">
+    <pathelement location="${graphsim.testoutput.dir}"/>
+    <pathelement location="${graphsim.output.dir}"/>
+    <path refid="library.modules.classpath"/>
   </path>
   
   
-  <patternset id="excluded.from.module.seniorthesis">
+  <patternset id="excluded.from.module.graphsim">
     <patternset refid="ignored.files"/>
   </patternset>
   
-  <patternset id="excluded.from.compilation.seniorthesis">
-    <patternset refid="excluded.from.module.seniorthesis"/>
+  <patternset id="excluded.from.compilation.graphsim">
+    <patternset refid="excluded.from.module.graphsim"/>
   </patternset>
   
-  <path id="seniorthesis.module.sourcepath">
-    <dirset dir="${module.seniorthesis.basedir}">
+  <path id="graphsim.module.sourcepath">
+    <dirset dir="${module.graphsim.basedir}">
       <include name="src"/>
     </dirset>
   </path>
   
   
-  <target name="compile.module.seniorthesis" depends="compile.module.seniorthesis.production,compile.module.seniorthesis.tests" description="Compile module SeniorThesis"/>
+  <target name="compile.module.graphsim" depends="compile.module.graphsim.production,compile.module.graphsim.tests" description="Compile module GraphSim"/>
   
-  <target name="compile.module.seniorthesis.production" description="Compile module SeniorThesis; production classes">
-    <mkdir dir="${seniorthesis.output.dir}"/>
-    <javac destdir="${seniorthesis.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.seniorthesis}/javac">
-      <compilerarg line="${compiler.args.seniorthesis}"/>
-      <bootclasspath refid="seniorthesis.module.bootclasspath"/>
-      <classpath refid="seniorthesis.module.production.classpath"/>
-      <src refid="seniorthesis.module.sourcepath"/>
-      <patternset refid="excluded.from.compilation.seniorthesis"/>
-    </javac>
+  <target name="compile.module.graphsim.production" depends="register.custom.compilers" description="Compile module GraphSim; production classes">
+    <mkdir dir="${graphsim.output.dir}"/>
+    <javac2 destdir="${graphsim.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.graphsim}/javac">
+      <compilerarg line="${compiler.args.graphsim}"/>
+      <bootclasspath refid="graphsim.module.bootclasspath"/>
+      <classpath refid="graphsim.module.production.classpath"/>
+      <src refid="graphsim.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.graphsim"/>
+    </javac2>
     
-    <copy todir="${seniorthesis.output.dir}">
-      <fileset dir="${module.seniorthesis.basedir}/src">
+    <copy todir="${graphsim.output.dir}">
+      <fileset dir="${module.graphsim.basedir}/src">
         <patternset refid="compiler.resources"/>
         <type type="file"/>
       </fileset>
     </copy>
   </target>
   
-  <target name="compile.module.seniorthesis.tests" depends="compile.module.seniorthesis.production" description="compile module SeniorThesis; test classes" unless="skip.tests"/>
+  <target name="compile.module.graphsim.tests" depends="register.custom.compilers,compile.module.graphsim.production" description="compile module GraphSim; test classes" unless="skip.tests"/>
   
-  <target name="clean.module.seniorthesis" description="cleanup module">
-    <delete dir="${seniorthesis.output.dir}"/>
-    <delete dir="${seniorthesis.testoutput.dir}"/>
+  <target name="clean.module.graphsim" description="cleanup module">
+    <delete dir="${graphsim.output.dir}"/>
+    <delete dir="${graphsim.testoutput.dir}"/>
+  </target>
+  
+  
+  <!-- Module InputGenerator -->
+  
+  <dirname property="module.inputgenerator.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.inputgenerator" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.inputgenerator" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.inputgenerator" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.inputgenerator" value="-encoding UTF-8 -source 1.7 ${compiler.args}"/>
+  
+  <property name="inputgenerator.output.dir" value="${module.inputgenerator.basedir}/out/production/InputGenerator"/>
+  <property name="inputgenerator.testoutput.dir" value="${module.inputgenerator.basedir}/out/test/InputGenerator"/>
+  
+  <path id="inputgenerator.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="inputgenerator.module.production.classpath">
+    <path refid="${module.jdk.classpath.inputgenerator}"/>
+    <pathelement location="${basedir}/Modules/snakeyaml-1.16.jar"/>
+  </path>
+  
+  <path id="inputgenerator.runtime.production.module.classpath">
+    <pathelement location="${inputgenerator.output.dir}"/>
+    <pathelement location="${basedir}/Modules/snakeyaml-1.16.jar"/>
+  </path>
+  
+  <path id="inputgenerator.module.classpath">
+    <path refid="${module.jdk.classpath.inputgenerator}"/>
+    <pathelement location="${inputgenerator.output.dir}"/>
+    <pathelement location="${basedir}/Modules/snakeyaml-1.16.jar"/>
+  </path>
+  
+  <path id="inputgenerator.runtime.module.classpath">
+    <pathelement location="${inputgenerator.testoutput.dir}"/>
+    <pathelement location="${inputgenerator.output.dir}"/>
+    <pathelement location="${basedir}/Modules/snakeyaml-1.16.jar"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.inputgenerator">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.inputgenerator">
+    <patternset refid="excluded.from.module.inputgenerator"/>
+  </patternset>
+  
+  <path id="inputgenerator.module.sourcepath">
+    <dirset dir="${module.inputgenerator.basedir}/Tools/InputGenerator">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.inputgenerator" depends="compile.module.inputgenerator.production,compile.module.inputgenerator.tests" description="Compile module InputGenerator"/>
+  
+  <target name="compile.module.inputgenerator.production" depends="register.custom.compilers" description="Compile module InputGenerator; production classes">
+    <mkdir dir="${inputgenerator.output.dir}"/>
+    <javac2 destdir="${inputgenerator.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.inputgenerator}/javac">
+      <compilerarg line="${compiler.args.inputgenerator}"/>
+      <bootclasspath refid="inputgenerator.module.bootclasspath"/>
+      <classpath refid="inputgenerator.module.production.classpath"/>
+      <src refid="inputgenerator.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.inputgenerator"/>
+    </javac2>
+    
+    <copy todir="${inputgenerator.output.dir}">
+      <fileset dir="${module.inputgenerator.basedir}/Tools/InputGenerator/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.inputgenerator.tests" depends="register.custom.compilers,compile.module.inputgenerator.production" description="compile module InputGenerator; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.inputgenerator" description="cleanup module">
+    <delete dir="${inputgenerator.output.dir}"/>
+    <delete dir="${inputgenerator.testoutput.dir}"/>
   </target>
   
   <target name="init" description="Build initialization">
     <!-- Perform any build initialization in this target -->
   </target>
   
-  <target name="clean" depends="clean.module.seniorthesis" description="cleanup all"/>
+  <target name="clean" depends="clean.module.graphsim, clean.module.inputgenerator" description="cleanup all"/>
   
-  <target name="build.modules" depends="init, clean, compile.module.seniorthesis" description="build all modules"/>
+  <target name="build.modules" depends="init, clean, compile.module.graphsim, compile.module.inputgenerator" description="build all modules"/>
   
   <target name="all" depends="build.modules" description="build all"/>
 </project>
