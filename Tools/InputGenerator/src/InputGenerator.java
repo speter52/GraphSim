@@ -1,6 +1,8 @@
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
+import java.io.PrintWriter;
+import java.lang.Exception;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -181,6 +183,17 @@ public class InputGenerator
 
         Yaml yaml = new Yaml(options);
 
-        System.out.println(yaml.dump(clusterList));
+        try
+        {
+            PrintWriter fileOut = new PrintWriter("Tools/InputGenerator/GraphInput.yml");
+
+            fileOut.println(yaml.dump(clusterList));
+
+            fileOut.close();
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
 }
