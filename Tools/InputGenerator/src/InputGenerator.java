@@ -80,17 +80,20 @@ public class InputGenerator
 
         int partitionOffset = partitionOfNode*numberOfNodesInPartition;
 
-        if(nodeID % numberOfNodesInPartition == 0)
+        // TODO: IF STATEMENT IS TEMPORARY FIX FOR BUG BEFORE DEMO
+        if(partitionOfNode > 1)
         {
-            int neighborToAdd = (nodeID-1) % numberOfNodes;
+            if (nodeID % numberOfNodesInPartition == 0)
+            {
+                int neighborToAdd = (nodeID - 1) % numberOfNodes;
 
-            if(neighborToAdd < 0) neighbors.add(neighborToAdd + numberOfNodes);
+                if (neighborToAdd < 0) neighbors.add(neighborToAdd + numberOfNodes);
 
-            else neighbors.add(neighborToAdd);
-        }
-        else if(nodeID % numberOfNodesInPartition == numberOfNodesInPartition-1)
-        {
-            neighbors.add((nodeID + 1) % numberOfNodes);
+                else neighbors.add(neighborToAdd);
+            } else if (nodeID % numberOfNodesInPartition == numberOfNodesInPartition - 1)
+            {
+                neighbors.add((nodeID + 1) % numberOfNodes);
+            }
         }
 
         for(int i=0; i < numberOfNeighbors; i++)
