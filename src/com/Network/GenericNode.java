@@ -83,7 +83,10 @@ public abstract class GenericNode extends Thread
     {
         data.put(key, value);
 
-        writer.addJob(new WriteJob(WriteType.DATABASE, iterationNumber, selfID, key, Double.parseDouble(value.toString())));
+        if(selfID==0 && key=="x")
+        {
+            writer.addJob(new WriteJob(WriteType.DATABASE, iterationNumber, selfID, key, Double.parseDouble(value.toString())));
+        }
     }
 
     /**
