@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+#TODO: Need to move to Tools folder but right now getting strange BUILD FAILED error when
+#TODO: that directory
 
 ant compile.module.inputgenerator.production
 
