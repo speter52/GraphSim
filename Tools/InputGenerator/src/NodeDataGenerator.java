@@ -4,15 +4,17 @@
 public class NodeDataGenerator
 {
     /**
-     * Function that determines the initial value a given node should for each state variable.
+     * Function that determines the initial value each state variable of a node is initialized to.
      * @param stateVariable
      * @param nodeID
      * @return
      */
     public static double calculateInitialValue(String stateVariable, int nodeID)
     {
-        if(stateVariable.equals("x")) return nodeID*2+2;
+        switch (stateVariable){
+            case "x": return nodeID*2+2;
 
-        else return 0;
+            default: return 0;
+        }
     }
 }

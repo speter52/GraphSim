@@ -67,7 +67,7 @@ public class InputGenerator
 
         int numberOfNodesInPartition = numberOfNodes/numberOfPartitions;
 
-        if(neighbors.size() >= numberOfNodesInPartition)
+        if(numberOfNeighbors >= numberOfNodesInPartition)
         {
             System.out.println("The number of neighbors has to be less than the number of nodes in a partition.");
 
