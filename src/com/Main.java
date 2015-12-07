@@ -6,13 +6,15 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException
     {
-        if(args.length == 1)
+        if(args.length == 2)
         {
-            Launcher.launchNetwork(args[0]);
+            // 1st argument - Input YAML file, 2nd argument - Maximum number of iterations
+            Launcher.launchNetwork(args[0], Integer.parseInt(args[1]));
         }
         else
         {
-            System.out.println("Need input YAML file that represents the nodes in the network.");
+            System.out.println("Need input YAML file that represents the nodes in the network, " +
+                                "followed by maximum number of iterations.");
         }
 
         System.exit(0);

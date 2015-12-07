@@ -20,8 +20,9 @@ public class Launcher
      * Build nodes in this cluster, wait for all the other clusters to start up, and then send out start messages
      * to nodes on this cluster.
      * @param inputFile
+     * @param iterationMax
      */
-    public static void launchNetwork(String inputFile)
+    public static void launchNetwork(String inputFile, int iterationMax)
     {
         try
         {
@@ -55,7 +56,7 @@ public class Launcher
 
             writer.start();
 
-            Cluster selfCluster = new Cluster(networkRepresentation, messagePasser, writer);
+            Cluster selfCluster = new Cluster(networkRepresentation, iterationMax, messagePasser, writer);
 
             // Let other clusters in network know this cluster is ready
             notifyNetworkReady(messagePasser);

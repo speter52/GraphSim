@@ -90,6 +90,15 @@ public abstract class GenericNode extends Thread
     }
 
     /**
+     * Set the maximum number of iterations the algorithm should run.
+     * @param iterationMax
+     */
+    public void setIterationMax(int iterationMax)
+    {
+        this.iterationMax = iterationMax;
+    }
+
+    /**
      * Process messages received by node
      * @param messageString
      */

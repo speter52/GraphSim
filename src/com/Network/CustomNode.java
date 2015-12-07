@@ -92,9 +92,6 @@ public class CustomNode extends GenericNode
     @Override
     protected void startNode()
     {
-        // Temporarily set iterationMax here.
-        iterationMax = 100;
-
         algorithm2Prologue();
     }
 }

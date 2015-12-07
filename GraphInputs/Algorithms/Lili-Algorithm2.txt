@@ -69,9 +69,6 @@
     @Override
     protected void startNode()
     {
-        // Temporarily set iterationMax here.
-        iterationMax = 1000;
-
         algorithm2Prologue();
     }
 

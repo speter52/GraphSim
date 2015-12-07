@@ -18,6 +18,11 @@ public class Cluster
     public String clusterID;
 
     /**
+     * The maximum number of iterations the nodes in this cluster should run the algorithm for.
+     */
+    private int iterationMax;
+
+    /**
      * List of nodes in this cluster.
      */
     private Map<Integer,CustomNode> nodeList;
@@ -79,6 +84,8 @@ public class Cluster
 
             CustomNode newNode = Parser.parseNodeEntry(nodeID, nodeDetails, messagePasser, writer);
 
+            newNode.setIterationMax(iterationMax);
+
             newNode.start();
 
             nodeList.put(nodeID, newNode);
@@ -90,9 +97,11 @@ public class Cluster
      * @param networkRepresentation
      * @return List of Nodes created.
      */
-    public Cluster(Map networkRepresentation, MessagePasser messagePasser, WriterThread writer)
+    public Cluster(Map networkRepresentation, int iterationMax, MessagePasser messagePasser, WriterThread writer)
     {
         Map<Integer,Object> nodesRepresentation = Parser.getNodesInSelfCluster(networkRepresentation);
+
+        this.iterationMax = iterationMax;
 
         this.messagePasser = messagePasser;
 
