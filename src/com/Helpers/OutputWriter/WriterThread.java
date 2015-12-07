@@ -112,9 +112,7 @@ public class WriterThread extends Thread
 
             Statement initializeStatements = dbConnection.createStatement();
 
-            initializeStatements.addBatch(String.format("DROP TABLE IF EXISTS %s;", table));
-
-            initializeStatements.addBatch(String.format("CREATE TABLE RunResults(RunName varchar(255), IterationNumber int, Node int, " +
+            initializeStatements.addBatch(String.format("CREATE TABLE IF NOT EXISTS RunResults(RunName varchar(255), IterationNumber int, Node int, " +
                                             "StateVariable varchar(255), Value float(16,8));"));
 
             initializeStatements.executeBatch();
