@@ -106,27 +106,33 @@ public class WriterThread extends Thread
             String password = configValues.getDatabasePassword();
             String table = configValues.getDatabaseTable();
 
-            printToConsole("Saving results to database.");
+            printToConsole("Saving results to database...");
 
             Connection dbConnection = DriverManager.getConnection(url, user, password);
 
-            Statement dropStatement = dbConnection.createStatement();
+            Statement initializeStatements = dbConnection.createStatement();
 
-            dropStatement.execute(String.format("DROP TABLE IF EXISTS %s;", table));
+            initializeStatements.addBatch(String.format("DROP TABLE IF EXISTS %s;", table));
 
-            Statement createStatement = dbConnection.createStatement();
 
-            String temp = String.format("CREATE TABLE %s(IterationNumber int, Node int, " +
-                    "StateVariable varchar(255), Value float(16,8));", table);
-            createStatement.execute(temp);
+            initializeStatements.addBatch(String.format("CREATE TABLE %s(IterationNumber int, Node int, " +
+                                            "StateVariable varchar(255), Value float(16,8));", table));
+
+            initializeStatements.addBatch(String.format("CREATE TABLE IF NOT EXISTS " +
+                                                           "AlgorithmRuns(RunName varchar(255));"));
+
+            initializeStatements.addBatch(String.format("INSERT IGNORE INTO AlgorithmRuns (RunName) VALUES (\"%s\");",
+                                                    table));
+
+            initializeStatements.executeBatch();
 
             Statement insertStatements = dbConnection.createStatement();
 
             for(WriteJob job: valuesForDB)
             {
-                String statement = String.format("INSERT INTO %s (IterationNumber, Node, StateVariable, Value) " +
-                        "VALUES (" + job.iterationNumber + ", " + job.nodeId + ", \"" + job.stateVariable + "\", " + job.stateValue + ")", table);
                 // TODO: Reformat string to use placeholders
+                String statement = String.format("INSERT INTO %s (IterationNumber, Node, StateVariable, Value) " +
+                        "VALUES (" + job.iterationNumber + ", " + job.nodeId + ", \"" + job.stateVariable + "\", " + job.stateValue + ");", table);
                 insertStatements.addBatch(statement);
             }
 
