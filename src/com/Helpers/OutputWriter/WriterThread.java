@@ -114,15 +114,8 @@ public class WriterThread extends Thread
 
             initializeStatements.addBatch(String.format("DROP TABLE IF EXISTS %s;", table));
 
-
-            initializeStatements.addBatch(String.format("CREATE TABLE %s(IterationNumber int, Node int, " +
-                                            "StateVariable varchar(255), Value float(16,8));", table));
-
-            initializeStatements.addBatch(String.format("CREATE TABLE IF NOT EXISTS " +
-                                                           "AlgorithmRuns(RunName varchar(255));"));
-
-            initializeStatements.addBatch(String.format("INSERT IGNORE INTO AlgorithmRuns (RunName) VALUES (\"%s\");",
-                                                    table));
+            initializeStatements.addBatch(String.format("CREATE TABLE RunResults(RunName varchar(255), IterationNumber int, Node int, " +
+                                            "StateVariable varchar(255), Value float(16,8));"));
 
             initializeStatements.executeBatch();
 
@@ -131,8 +124,8 @@ public class WriterThread extends Thread
             for(WriteJob job: valuesForDB)
             {
                 // TODO: Reformat string to use placeholders
-                String statement = String.format("INSERT INTO %s (IterationNumber, Node, StateVariable, Value) " +
-                        "VALUES (" + job.iterationNumber + ", " + job.nodeId + ", \"" + job.stateVariable + "\", " + job.stateValue + ");", table);
+                String statement = String.format("INSERT INTO RunResults(RunName, IterationNumber, Node, StateVariable, Value) " +
+                        "VALUES (\"" + table + "\", " + job.iterationNumber + ", " + job.nodeId + ", \"" + job.stateVariable + "\", " + job.stateValue + ");", table);
                 insertStatements.addBatch(statement);
             }
 
