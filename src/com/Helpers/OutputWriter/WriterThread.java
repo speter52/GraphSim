@@ -7,10 +7,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -115,21 +112,39 @@ public class WriterThread extends Thread
             initializeStatements.addBatch(String.format("CREATE TABLE IF NOT EXISTS RunResults(RunName varchar(255), IterationNumber int, Node int, " +
                                             "StateVariable varchar(255), Value float(16,8));"));
 
+            // Delete old results
+            initializeStatements.addBatch(String.format("DELETE FROM RunResults WHERE RunName=\"%s\"", table));
+
             initializeStatements.executeBatch();
 
             Statement insertStatements = dbConnection.createStatement();
 
+            Date beforeTime = new Date();
+
+            String valueList = "";
+
             for(WriteJob job: valuesForDB)
             {
                 // TODO: Reformat string to use placeholders
-                String statement = String.format("INSERT INTO RunResults(RunName, IterationNumber, Node, StateVariable, Value) " +
-                        "VALUES (\"" + table + "\", " + job.iterationNumber + ", " + job.nodeId + ", \"" + job.stateVariable + "\", " + job.stateValue + ");", table);
-                insertStatements.addBatch(statement);
+                valueList += "(\"" + table + "\", " + job.iterationNumber + ", " + job.nodeId + ", \"" + job.stateVariable + "\", " + job.stateValue + "),";
             }
 
-            insertStatements.executeBatch();
+            valueList = valueList.substring(0, valueList.length()-1);
+
+            String insertStatementString = "INSERT INTO RunResults(RunName, IterationNumber, Node," +
+                                                " StateVariable, Value) VALUES " + valueList + ";";
+
+            insertStatements.execute(insertStatementString);
 
             dbConnection.close();
+
+            Date afterTime = new Date();
+
+            System.out.println("Results saved.");
+
+            long timeElapsed = (afterTime.getTime() - beforeTime.getTime());
+
+            System.out.println(String.format("Time Elapsed for Database Writes: %dms", timeElapsed));
         }
         catch(SQLException ex)
         {
