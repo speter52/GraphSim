@@ -8,12 +8,72 @@ import com.MessageHandler.MessagePasser;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Class to represent one node. Listens for and sends messages from/to other nodes while doing work.
  */
 public abstract class GenericNode extends Thread
 {
+    /**
+     * Class to take messages from message passer and store them in internal message array by iteration
+     * number of message.
+     */
+    private class Inbox extends Thread
+    {
+        /**
+         * Mesage Passer that this Inbox listens to for incoming messages.
+         */
+        private MessagePasser messagePasser;
+
+        /**
+         * Internal structure of node that stores all incoming messages by iteration number.
+         */
+        private LinkedBlockingQueue<Message>[] incomingMessageArray;
+
+        /**
+         * Boolean that determines when the inbox thread should terminate.
+         */
+        private boolean isRunning = true;
+
+        /**
+         * Terminate inbox thread.
+         */
+        public void stopInbox()
+        {
+            isRunning = false;
+        }
+
+        /**
+         * Primary constructor.
+         * @param messagePasser
+         * @param incomingMessageArray
+         */
+        public Inbox(MessagePasser messagePasser, LinkedBlockingQueue<Message>[] incomingMessageArray)
+        {
+            this.messagePasser = messagePasser;
+
+            this.incomingMessageArray = incomingMessageArray;
+        }
+
+        /**
+         * Run method of inbox thread. Finishes when isRunning is set to false.
+         */
+        public void run()
+        {
+            while(isRunning)
+            {
+                Message incomingMessage = new Message(messagePasser.waitAndRetrieveMessage(selfID));
+
+                int iterationMessageSentFrom = Integer.parseInt(incomingMessage.getData("IterationNumber"));
+
+                if((iterationMessageSentFrom - 1) < iterationMax)
+                    incomingMessageArray[iterationMessageSentFrom - 1].add(incomingMessage);
+            }
+        }
+    }
+
     /**
      * ID of this node.
      */
@@ -32,8 +92,7 @@ public abstract class GenericNode extends Thread
     /**
      * Max number of iterations the algorithm should run
      */
-    // Temporarily overridden in CustomNode class
-    protected int iterationMax = 1000;
+    protected int iterationMax = 100;
 
     /**
      * List of this node's neighbors.
@@ -45,6 +104,16 @@ public abstract class GenericNode extends Thread
      * send messages by adding to the recipient node's queue.
      */
     private MessagePasser messagePasser;
+
+    /**
+     * Structure that keeps track of all the messages received by the node and sorts by iteration number.
+     */
+    private LinkedBlockingQueue<Message>[] incomingMessageArray;
+
+    /**
+     * Class that sorts all the incoming messages by iteration number.
+     */
+    private Inbox inbox;
 
     /**
      * Thread that handles displaying output so node can continue processing work.
@@ -83,29 +152,15 @@ public abstract class GenericNode extends Thread
     {
         data.put(key, value);
 
-        //if(selfID==0 && key=="x")
-        //{
-            writer.addJob(new WriteJob(WriteType.DATABASE, iterationNumber, selfID, key, Double.parseDouble(value.toString())));
-        //}
-    }
-
-    /**
-     * Set the maximum number of iterations the algorithm should run.
-     * @param iterationMax
-     */
-    public void setIterationMax(int iterationMax)
-    {
-        this.iterationMax = iterationMax;
+        writer.addJob(new WriteJob(WriteType.DATABASE, iterationNumber, selfID, key, Double.parseDouble(value.toString())));
     }
 
     /**
      * Process messages received by node
-     * @param messageString
+     * @param incomingMessage
      */
-    private void processMessage(String messageString)
+    private void processMessage(Message incomingMessage)
     {
-        Message incomingMessage = new Message(messageString);
-
         String messageType = incomingMessage.getData("Type");
 
         switch (messageType)
@@ -134,7 +189,7 @@ public abstract class GenericNode extends Thread
      * @param messagePasser Array of message queues used for node communication
      */
     public GenericNode(int nodeID, MessagePasser messagePasser, WriterThread writer, ArrayList neighbors,
-                       Map data)
+                       Map data, int iterationMax)
     {
         this.selfID = nodeID;
 
@@ -145,6 +200,19 @@ public abstract class GenericNode extends Thread
         this.neighbors = neighbors;
 
         this.data = data;
+
+        this.iterationMax = iterationMax;
+
+        this.incomingMessageArray = new LinkedBlockingQueue[iterationMax];
+
+        for(int i = 0; i < iterationMax; i++)
+        {
+            incomingMessageArray[i] = new LinkedBlockingQueue<>();
+        }
+
+        this.inbox = new Inbox(this.messagePasser, this.incomingMessageArray);
+
+        this.inbox.start();
     }
 
     /**
@@ -155,6 +223,8 @@ public abstract class GenericNode extends Thread
     public void sendMessage(int receiverID, Message message)
     {
         message.addData("receiverID", Integer.toString(receiverID));
+
+        message.addData("IterationNumber", Integer.toString(iterationNumber));
 
         messagePasser.sendMessage(receiverID, message);
     }
@@ -229,10 +299,19 @@ public abstract class GenericNode extends Thread
     {
         while(iterationNumber < iterationMax+1)
         {
-            String incomingMessage = messagePasser.waitAndRetrieveMessage(selfID);
+            try
+            {
+                Message incomingMessage = incomingMessageArray[iterationNumber-1].take();
 
-            processMessage(incomingMessage);
+                processMessage(incomingMessage);
+            }
+            catch (InterruptedException ex)
+            {
+                ex.printStackTrace();
+            }
         }
+
+        inbox.stopInbox();
 
         printToConsole("Node " + selfID + " finished.");
     }

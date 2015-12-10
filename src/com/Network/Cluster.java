@@ -82,9 +82,7 @@ public class Cluster
 
             Map nodeDetails = (Map) nodeEntry.getValue();
 
-            CustomNode newNode = Parser.parseNodeEntry(nodeID, nodeDetails, messagePasser, writer);
-
-            newNode.setIterationMax(iterationMax);
+            CustomNode newNode = Parser.parseNodeEntry(nodeID, nodeDetails, messagePasser, writer, iterationMax);
 
             newNode.start();
 

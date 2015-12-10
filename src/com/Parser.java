@@ -132,13 +132,13 @@ public class Parser
      * @param messagePasser
      * @return CustomNode that was built
      */
-    public static CustomNode parseNodeEntry(int nodeId, Map nodeDetails, MessagePasser messagePasser, WriterThread writer)
+    public static CustomNode parseNodeEntry(int nodeId, Map nodeDetails, MessagePasser messagePasser, WriterThread writer, int iterationMax)
     {
         ArrayList neighbors = (ArrayList)nodeDetails.get("neighbors");
 
         Map data = (Map)nodeDetails.get("data");
 
-        CustomNode newNode = new CustomNode(nodeId, messagePasser, writer, neighbors, data);
+        CustomNode newNode = new CustomNode(nodeId, messagePasser, writer, neighbors, data, iterationMax);
 
         return newNode;
     }

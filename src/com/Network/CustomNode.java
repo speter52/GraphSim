@@ -14,9 +14,9 @@ import java.util.Map;
 public class CustomNode extends GenericNode
 {
     public CustomNode(int nodeID, MessagePasser messagePasser, WriterThread writer, ArrayList neighbors,
-                      Map data)
+                      Map data, int iterationMax)
     {
-        super(nodeID, messagePasser, writer, neighbors, data);
+        super(nodeID, messagePasser, writer, neighbors, data, iterationMax);
     }
 
     /**
