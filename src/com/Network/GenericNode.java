@@ -64,12 +64,18 @@ public abstract class GenericNode extends Thread
         {
             while(isRunning)
             {
+                String ANSI_WHITE = "\u001B[37m";
+                String ANSI_RESET = "\u001B[0m";
+
+                System.out.println(ANSI_WHITE + "Iteration " + iterationNumber +
+                        " - Node " + selfID + " waiting for message..."+ ANSI_RESET);
+
                 Message incomingMessage = new Message(messagePasser.waitAndRetrieveMessage(selfID));
 
-                int iterationMessageSentFrom = Integer.parseInt(incomingMessage.getData("IterationNumber"));
+                int iterationSentFrom = Integer.parseInt(incomingMessage.getData("IterationNumber"));
 
-                if((iterationMessageSentFrom - 1) < iterationMax)
-                    incomingMessageArray[iterationMessageSentFrom - 1].add(incomingMessage);
+                if((iterationSentFrom) < iterationMax)
+                    incomingMessageArray[iterationSentFrom].add(incomingMessage);
             }
         }
     }
@@ -87,12 +93,17 @@ public abstract class GenericNode extends Thread
     /**
      * The iteration number that this node is currently on.
      */
-    protected int iterationNumber = 1;
+    protected int iterationNumber = 0;
 
     /**
      * Max number of iterations the algorithm should run
      */
     protected int iterationMax = 100;
+
+    /**
+     * Determines if the node has received a start message yet or not.
+     */
+    private boolean isStarted = false;
 
     /**
      * List of this node's neighbors.
@@ -156,6 +167,22 @@ public abstract class GenericNode extends Thread
     }
 
     /**
+     * Go to next iteration.
+     */
+    protected void goToNextIteration()
+    {
+        String ANSI_RED = "\u001B[31m";
+        String ANSI_RESET = "\u001B[0m";
+        String ANSI_BOLD = "\u001B[1m";
+
+        System.out.println(ANSI_BOLD + ANSI_RED + "Iteration " + iterationNumber + " - Node " + selfID + ": Going to next iteration, size of previous iteration queue: "
+                + incomingMessageArray[iterationNumber].size() +
+                "\n Array contents from Iteration " + iterationNumber+  ": "+ incomingMessageArray[iterationNumber].toString() + ANSI_RESET);
+
+        iterationNumber++;
+    }
+
+    /**
      * Process messages received by node
      * @param incomingMessage
      */
@@ -166,11 +193,23 @@ public abstract class GenericNode extends Thread
         switch (messageType)
         {
             case "Start":
+                isStarted = true;
+
+                goToNextIteration();
+
                 startNode();
+
                 break;
 
             case "Response":
-                processResponse(incomingMessage);
+                if(isStarted)
+                    processResponse(incomingMessage);
+                else
+                {
+                    printToConsole("Node %d received a response before being started - exiting.");
+
+                    System.exit(1);
+                }
                 break;
         }
     }
@@ -203,9 +242,10 @@ public abstract class GenericNode extends Thread
 
         this.iterationMax = iterationMax;
 
-        this.incomingMessageArray = new LinkedBlockingQueue[iterationMax];
+        // The 0th index of the incomingMessageArray will hold the start message
+        this.incomingMessageArray = new LinkedBlockingQueue[iterationMax + 1];
 
-        for(int i = 0; i < iterationMax; i++)
+        for(int i = 0; i < iterationMax+1; i++)
         {
             incomingMessageArray[i] = new LinkedBlockingQueue<>();
         }
@@ -225,6 +265,18 @@ public abstract class GenericNode extends Thread
         message.addData("receiverID", Integer.toString(receiverID));
 
         message.addData("IterationNumber", Integer.toString(iterationNumber));
+
+        String ANSI_RESET = "\u001B[0m";
+        String ANSI_YELLOW = "\u001B[33m";
+
+        System.out.println(ANSI_YELLOW + "Iteration " + iterationNumber + " - Node " + selfID + " sending " + message.getData("x")+ " to Node " +
+                message.getData("receiverID") + " in Iteration " + message.getData("IterationNumber")
+                + ANSI_RESET);
+
+        /*
+        System.out.println(ANSI_YELLOW + "Iteration " + iterationNumber + " Message Sending - " + message
+                + ANSI_RESET);
+                */
 
         messagePasser.sendMessage(receiverID, message);
     }
@@ -297,11 +349,13 @@ public abstract class GenericNode extends Thread
      */
     public void run()
     {
-        while(iterationNumber < iterationMax+1)
+        // TODO: Since iterationNumber is 1-indexed, the loop should only finish when iterationNumber < iterationMax+1.
+        // TODO: But looks like iterationNumber isn't incremented in the final iteration.
+        while(iterationNumber < iterationMax)
         {
             try
             {
-                Message incomingMessage = incomingMessageArray[iterationNumber-1].take();
+                Message incomingMessage = incomingMessageArray[iterationNumber].take();
 
                 processMessage(incomingMessage);
             }

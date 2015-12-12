@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.Semaphore;
 
 /**
  * Class to handle passing messages between different nodes.
@@ -59,6 +60,11 @@ public class MessagePasser
     private Map<String,Socket> clusterSocketMap;
 
     /**
+     * Mutex for each node to ensure messages are added to the right queue in the order that they're sent.
+     */
+    private Semaphore[] mutexes;
+
+    /**
      * Primary constructor that builds communication array from nodes in cluster.
      * @param networkRepresentation Map that represents all the clusters in the network and their nodes
      */
@@ -79,6 +85,14 @@ public class MessagePasser
         Map<Integer,Object> nodesRepresentation = Parser.getNodesInCluster(this.selfClusterID, networkRepresentation);
 
         buildCommunicationArray(nodesRepresentation);
+
+        // TODO: Temp mutexes to try and eliminate deadlock
+        mutexes = new Semaphore[nodesRepresentation.size()];
+
+        for(int i = 0; i < nodesRepresentation.size(); i++)
+        {
+            mutexes[i] = new Semaphore(1);
+        }
     }
 
     /**
@@ -199,6 +213,9 @@ public class MessagePasser
     {
         try
         {
+            // TODO: Need mutexes? Test speed with correctness
+            mutexes[receiverID].acquire();
+
             String receivingCluster = nodeToClusterMap.get(receiverID);
 
             // If the node is not in this cluster, send a message to the other cluster on the appropriate socket.
@@ -215,6 +232,8 @@ public class MessagePasser
 
                 communicationArray[receiverIndex].put(messageString);
             }
+
+            mutexes[receiverID].release();
         }
         catch (Exception ex)
         {

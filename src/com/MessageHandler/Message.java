@@ -66,4 +66,9 @@ public class Message
         return serializedMessage;
     }
 
+    @Override
+    public String toString()
+    {
+        return this.serializeMessage();
+    }
 }

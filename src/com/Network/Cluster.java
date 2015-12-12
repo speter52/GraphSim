@@ -46,6 +46,8 @@ public class Cluster
 
         startMessage.addData("Type", "Start");
 
+        startMessage.addData("IterationNumber", "0");
+
         for (CustomNode node : nodeList.values())
         {
             node.sendMessage(node.getSelfID(), startMessage);

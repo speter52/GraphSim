@@ -57,12 +57,15 @@
 
             setState("x", newX);
 
-            System.out.println("Iteration " + iterationNumber + " - Node " + selfID + " updated value of X to " +
-                    newX);
+            String ANSI_GREEN = "\u001B[32m";
+            String ANSI_RESET = "\u001B[0m";
+            String ANSI_BOLD = "\u001B[1m";
+            System.out.println(ANSI_GREEN + ANSI_BOLD + "Iteration " + iterationNumber + " - Node " + selfID + " updated value of X to " +
+                    newX + ANSI_RESET);
 
             responsesReceived.clear();
 
-            iterationNumber++;
+            goToNextIteration();
 
             // Next iteration
             algorithm1Prologue();
