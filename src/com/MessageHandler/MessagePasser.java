@@ -155,6 +155,7 @@ public class MessagePasser
         }
         catch (IOException ex)
         {
+            //TODO: Not printing stack trace because other server might not be live yet, so keep trying
             //ex.printStackTrace();
 
             return null;
