@@ -32,7 +32,7 @@
     @Override
     protected void startNode()
     {
-        sendValuesToNeighbors();
+        sendValueToNeighbors("x", getState("x").toString());
     }
 
     /**
@@ -43,10 +43,10 @@
     @Override
     protected void processResponse(Message incomingMessage)
     {
-        Double responseValue = Double.parseDouble(incomingMessage.getArgument("x"));
+        Double responseValue = Double.parseDouble(incomingMessage.getData("x"));
 
         System.out.println("Node " + selfID + " received " + responseValue + " from Node " +
-                incomingMessage.getArgument("senderID"));
+                incomingMessage.getData("senderID"));
 
         responsesReceived.add(responseValue);
 
@@ -55,14 +55,16 @@
         {
             double averageOfResponses = calculateAverageOfList(responsesReceived);
 
-            data.put("x", averageOfResponses);
+            setState("x", averageOfResponses);
 
             System.out.println("Node " + selfID + " updated value of X to " +
                     averageOfResponses);
 
             responsesReceived.clear();
 
-            sendValuesToNeighbors();
+            goToNextIteration();
+
+            sendValueToNeighbors("x", averageOfResponses);
         }
     }
 
