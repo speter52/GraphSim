@@ -27,6 +27,15 @@
     }
 
     /**
+     * Process the start message that says the node can begin doing work
+     */
+    @Override
+    protected void startNode()
+    {
+        sendValuesToNeighbors();
+    }
+
+    /**
      * When a response is received from another node, add it to the response history. Once responses are
      * received from all the neighbors, average that and mark it as your new value for x.
      * @param incomingMessage
@@ -36,8 +45,8 @@
     {
         Double responseValue = Double.parseDouble(incomingMessage.getArgument("x"));
 
-        System.out.println(ANSI_GREEN + "Node " + selfID + " received " + responseValue + " from Node " +
-                incomingMessage.getArgument("senderID") + ANSI_RESET);
+        System.out.println("Node " + selfID + " received " + responseValue + " from Node " +
+                incomingMessage.getArgument("senderID"));
 
         responsesReceived.add(responseValue);
 
@@ -48,8 +57,8 @@
 
             data.put("x", averageOfResponses);
 
-            System.out.println(ANSI_BLUE + ANSI_BOLD + "Node " + selfID + " updated value of X to " +
-                    averageOfResponses + ANSI_RESET);
+            System.out.println("Node " + selfID + " updated value of X to " +
+                    averageOfResponses);
 
             responsesReceived.clear();
 
@@ -57,11 +66,3 @@
         }
     }
 
-    /**
-     * Process the start message that says the node can begin doing work
-     */
-    @Override
-    protected void startNode()
-    {
-        sendValuesToNeighbors();
-    }

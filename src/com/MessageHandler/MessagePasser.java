@@ -60,7 +60,8 @@ public class MessagePasser
     private Map<String,Socket> clusterSocketMap;
 
     /**
-     * Mutex for each node to ensure messages are added to the right queue in the order that they're sent.
+     * Mutex corresponding to each node to ensure messages are added in the order that they're sent.
+     * TODO: Test if this is neccessary
      */
     private Semaphore[] mutexes;
 
@@ -86,8 +87,15 @@ public class MessagePasser
 
         buildCommunicationArray(nodesRepresentation);
 
-        // TODO: Temp mutexes to try and eliminate deadlock
-        mutexes = new Semaphore[nodesRepresentation.size()];
+        buildMutexArray(nodesRepresentation);
+    }
+
+    /**
+     * Build an array of mutexes for each node so the messages are atomically enqueued in the order they are sent.
+     */
+    private void buildMutexArray(Map<Integer, Object> nodesRepresentation)
+    {
+        this.mutexes = new Semaphore[nodesRepresentation.size()];
 
         for(int i = 0; i < nodesRepresentation.size(); i++)
         {
@@ -184,7 +192,7 @@ public class MessagePasser
 
                 if(receivingSocket == null)
                 {
-                    // TEMP Colors for console output
+                    // TODO: Text output helper class. TEMP Colors for console output
                     String ANSI_RESET = "\u001B[0m";
                     String ANSI_BOLD = "\u001B[1m";
                     String ANSI_YELLOW = "\u001B[33m";

@@ -1,7 +1,5 @@
     private List<Double> responsesReceived = new ArrayList<>();
 
-
-
     private double calculateAverageOfList(List<Double> listOfInts)
     {
         double sum = 0;
@@ -12,6 +10,12 @@
         }
 
         return sum/listOfInts.size();
+    }
+
+    @Override
+    protected void startNode()
+    {
+        algorithm2Prologue();
     }
 
     private void algorithm2Prologue()
@@ -64,11 +68,5 @@
             // Next iteration
             algorithm2Prologue();
         }
-    }
-
-    @Override
-    protected void startNode()
-    {
-        algorithm2Prologue();
     }
 

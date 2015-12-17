@@ -12,6 +12,12 @@
         return sum/listOfInts.size();
     }
 
+    @Override
+    protected void startNode()
+    {
+        algorithm1Prologue();
+    }
+
     private void algorithm1Prologue()
     {
         double t = (double)getState("t");
@@ -57,11 +63,8 @@
 
             setState("x", newX);
 
-            String ANSI_GREEN = "\u001B[32m";
-            String ANSI_RESET = "\u001B[0m";
-            String ANSI_BOLD = "\u001B[1m";
-            System.out.println(ANSI_GREEN + ANSI_BOLD + "Iteration " + iterationNumber + " - Node " + selfID + " updated value of X to " +
-                    newX + ANSI_RESET);
+            System.out.println("Iteration " + iterationNumber + " - Node " + selfID + " updated value of X to " +
+                    newX);
 
             responsesReceived.clear();
 
@@ -71,10 +74,3 @@
             algorithm1Prologue();
         }
     }
-
-    @Override
-    protected void startNode()
-    {
-        algorithm1Prologue();
-    }
-
