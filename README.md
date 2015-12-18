@@ -9,6 +9,8 @@ The user provides a few lines of code to compiled into the Java application that
 
 To complement the Java application, an Express.js web application was built to easily run simulations under different conditions and to visualize the resulting data.
 
+This is the repository for the Java Application, the source code for the webapp can be found here - https://github.com/speter52/GraphView
+
 ## Table of Contents
 - [Architecture](#architecture)
   - [Node](#node)
@@ -110,7 +112,7 @@ A list is used to store another neighbor's value of `x` everytime a response is 
 ### Network Layout file
 The system requires an input file that represents the layout of the network - which nodes are connected to which nodes. This file also holds the all the initial state values of every node. YAML was chosen as the data serialization format for its readability. Here's a valid input file: 
 
-```
+```yaml
 Cluster0:
   isSelfCluster: true
   ip: localhost
