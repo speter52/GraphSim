@@ -40,7 +40,7 @@ public class MessagePasser
 
     /**
      * A dictionary that contains the index in the communicationArray that corresponds to a given node.
-     * Note: Only applies to the nodes in this cluster.
+     * NOTE: Only applies to the nodes in this cluster.
      */
     private Map<Integer,Integer> nodeIDToIndexMap;
 

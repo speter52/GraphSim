@@ -142,9 +142,9 @@ public class WriterThread extends Thread
 
             System.out.println("Results saved.");
 
-            long timeElapsed = (afterTime.getTime() - beforeTime.getTime());
+            double timeElapsed = ((double)(afterTime.getTime() - beforeTime.getTime()))/1000;
 
-            System.out.println(String.format("Time Elapsed for Database Writes: %dms", timeElapsed));
+            System.out.println(String.format("Time Elapsed for Database Writes: %.3f seconds", timeElapsed));
         }
         catch(SQLException ex)
         {

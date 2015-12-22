@@ -18,6 +18,11 @@ public class Cluster
     public String clusterID;
 
     /**
+     * Time the system started building nodes, used to calculated the time elapsed for the algorithm run.
+     */
+    private Date startTime;
+
+    /**
      * The maximum number of iterations the nodes in this cluster should run the algorithm for.
      */
     private int iterationMax;
@@ -65,7 +70,11 @@ public class Cluster
             }
         }
 
-        writer.printToConsole("Work complete, network exiting.");
+        Date endTime = new Date();
+
+        double timeElapsed =  ((double)endTime.getTime() - startTime.getTime())/1000;
+
+        writer.printToConsole(String.format("Work complete - Time Elapsed For Algorithm Run: %.3f seconds", timeElapsed));
     }
 
     /**
@@ -106,6 +115,8 @@ public class Cluster
         this.messagePasser = messagePasser;
 
         this.writer = writer;
+
+        this.startTime = new Date();
 
         buildNodes(nodesRepresentation);
     }
