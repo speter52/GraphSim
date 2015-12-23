@@ -222,7 +222,7 @@ Now consider another average consensus algorithm from Lili Su's paper(TODO: Inse
 
 The values here behave quite differently, and it reaches consensus significantly quicker than the previous algorithm. The differences between the two can be better highlighted by graphing a subset of the network from both algorithm runs on the same graph.
 
-![Algorithm Comparison](Documentation/AlgorithmComparison.png)
+![Algorithm Comparison](https://raw.githubusercontent.com/speter52/GraphSim/master/Documentation/AlgorithmComparison.png)
 
 Graphing Nodes 0-9 from both runs, it can be easily seen that the algorithm from Lili's paper will reach consensus much earlier than the standard averaging algorithm. The standard algorithm's values also appear to oscillate with a greater magnitude than Lili's algorithm.
 
