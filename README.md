@@ -7,7 +7,7 @@ When studying these algorithms, a significant amount of time is spent developing
 
 The user provides a few lines of code to be compiled into the Java application that define the behavior of each node. They then create an input file to indicate how these nodes are connected to each other and the nodes' initial values. With the input algorithm and the network representation, the system can run the simulation over a given number of iterations and save those results.
 
-To complement the Java application, an Express.js web application was built to easily run simulations under different conditions and to visualize the resulting data.
+To complement the Java application, an Express.js web application was built to easily run simulations under different conditions and to visualize the resulting data. This is the repository for the Java application, the web app can be found here - https://www.github.com/speter52/GraphView
 
 ## Table of Contents
 - [Application Architecture](#application-architecture)
