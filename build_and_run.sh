@@ -13,12 +13,12 @@ if [[ $1 != *".yml" ]]; then
 fi
 
 # Build project and output results
-ant compile.module.graphsim.production
+ant 
 
 # Build again to determine if build was successful, and if so run project
 # TODO: Find a way to output the build results while also searching the output for "BUILD SUCCESSFUL". Right now
 # TODO: running ANT once to build and another time to parse the output.
-if  ant compile.module.graphsim.production | grep -q "BUILD SUCCESSFUL"; then
-    java -cp Modules/*:out/production/GraphSim/ com.Main $1 $2
+if  ant | grep -q "BUILD SUCCESSFUL"; then
+    java -cp Modules/*:bin/GraphSim/ com.Main $1 $2
 fi
 

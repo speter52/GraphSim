@@ -2,8 +2,8 @@
 #TODO: Need to move to Tools folder but right now getting strange BUILD FAILED error when
 #TODO: that directory
 
-ant compile.module.inputgenerator.production
+ant inputgenerator 
 
-if  ant compile.module.inputgenerator.production | grep -q "BUILD SUCCESSFUL"; then
-    java -cp Modules/*:out/production/InputGenerator/ Main "$@"
+if  ant inputgenerator | grep -q "BUILD SUCCESSFUL"; then
+    java -cp Modules/*:bin/InputGenerator/ Main "$@"
 fi
