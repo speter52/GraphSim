@@ -1,7 +1,7 @@
-# A Framework to Abstract the Implementation of a Distributed System
+# A Framework for Evaluating Iterative Algorithms on Distributed Systems
 
 ## Introduction
-In the field of Distributed Systems, different algorithms are developed that determine the behavior of a node - an independent unit that processes work - within a network of nodes. The nodes are only aware of the properties pertaining to itself, and its direct neighbors. Each node has the ability to communicate with its neighbors through some form of message passing system. Iterative algorithms are a class of these algorithms - they consist of blocks of code that are repeatedly executed by several nodes in a network. After multiple iterations, the values of the different nodes will approach consensus. Some examples of iterative algorithms are mentioned at the end of this report. 
+In the field of Distributed Systems, different algorithms are developed that determine the behavior of a node - an independent unit that processes work - within a network of nodes. The nodes are only aware of the properties pertaining to itself, and its direct neighbors. Each node has the ability to communicate with its neighbors through some form of message passing system. Iterative algorithms are a class of these algorithms - they consist of blocks of code that are repeatedly executed by several nodes in a network. After multiple iterations, the values of the different nodes will approach consensus. The purpose of this system is to evaluate and study the behavior of these algorithms, such as those described in 
 
 When studying these algorithms, a significant amount of time is spent developing the system of nodes and a means for communication between them. Development can become tedious due to the nature of launching and running multiple nodes in parallel. This framework provides a way for the user to simulate and visualize a network of nodes running a given algorithm, while blackboxing the actual implementation of those nodes.
 
@@ -10,18 +10,18 @@ The user provides a few lines of code to be compiled into the Java application t
 To complement the Java application, an Express.js web application was built to easily run simulations under different conditions and to visualize the resulting data.
 
 ## Table of Contents
-- [Application Architecture](#architecture)
+- [Application Architecture](#application-architecture)
   - [Node](#node)
-  - [Network Layout File](#network-layout)
-  - [Message Passing](#message-passer)
-  - [Multi-Cluster Support](#multicluster)
-- [Web App](#architecture)
-  - [Initialize System](#initsystem)
-  - [Run Algorithm](#runalg)
-  - [Create Graph](#creategraph)
-- [Sample Runs](#runs)  
-- [Installation and Configuration](#multicluster)
-- [Related Work](#relatedwork)
+  - [Network Layout File](#network-layout-file)
+  - [Message Passing](#message-passing)
+  - [Multi-Cluster Support](#multi-cluster-support)
+- [Web App](#web-app)
+  - [Initialize System](#initialize-system)
+  - [Run Algorithm](#run-algorithm)
+  - [Create Graph](#create-graph)
+- [Sample Runs](#sample-runs)  
+- [Installation and Configuration](#installation-and-configuration)
+- [Related Work](#related-work)
 - [About](#about)
 
 
