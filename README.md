@@ -21,7 +21,7 @@ To complement the Java application, an Express.js web application was built to e
   - [Create Graph](#create-graph)
 - [Sample Runs](#sample-runs)  
 - [Installation and Configuration](#installation-and-configuration)
-- [Related Work](#related-work)
+- [References](#references)
 - [About](#about)
 
 
@@ -308,7 +308,7 @@ npm start
 
 and then navigating to ```localhost:3000```.
 
-## Related Work
+## References
 1. <a name="approx-consensus"></a>Bernadette Charron-Bost, Matthias Függer, Thomas Nowak. *Approximate Consensus in Highly Dynamic Networks: The Role of Averaging Algorithms*, arXiv:1408.0620.
 2. <a name="dual-averaging"></a>John Duchi, Alekh Agarwal, Martin Wainwright. *Dual Averaging for Distributed Optimization: Convergence Analysis and Network Scaling*,  	arXiv:1005.2012.
 3. <a name="lili1"></a>Lili Su, Nitin Vaidya. *Fault-Tolerant Multi-Agent Optimization: Part III*, arXiv:1509.01864.
