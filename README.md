@@ -297,3 +297,6 @@ npm start
 ```
 
 and then navigating to ```localhost:3000```.
+
+## About
+This project was my Senior Thesis duing Fall 2015 under Professor Nitin Vaidya(University of Illinois at Urbana-Champaign). For questions or comments, email Simon Peter - speter3@illinois.edu.
