@@ -21,7 +21,7 @@ public class CustomNode extends GenericNode
 
     /**
      * USER WRITTEN CODE BELOW TO PROCESS MESSAGES AND COMMUNICATE WITH NEIGHBORS
-     * USER NEEDS TO IMPLEMENT ABSTRACT processMessage() METHOD FROM SUPERCLASS
+     * USER NEEDS TO IMPLEMENT ABSTRACT startNode() AND processMessage() METHODs FROM SUPERCLASS
      */
     private List<Double> responsesReceived = new ArrayList<>();
 
