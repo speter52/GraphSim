@@ -315,4 +315,6 @@ and then navigating to ```localhost:3000```.
 4. <a name="lili2"></a>Lili Su, Nitin H. Vaidya. *Fault-Tolerant Distributed Optimization (Part IV): Constrained Optimization with Arbitrary Directed Networks*,  	arXiv:1511.01821.
 
 ## About
-This project was my Senior Thesis during the Fall of 2015 under Professor Nitin Vaidya(University of Illinois at Urbana-Champaign). For questions or comments, email Simon Peter - speter3@illinois.edu.
+This project was my Senior Thesis during the Fall of 2015 under Professor Nitin Vaidya(University of Illinois at Urbana-Champaign). Nitin Vaidya’s research is supported in part by the National Science Foundation.
+
+For questions or comments, email Simon Peter - simon.peter@gmail.com. 
